@@ -174,9 +174,85 @@ tfoot td { font-weight: 700; border-bottom: 0; }
 @media (max-width: 520px) { .toast { left: 16px; right: 16px; transform: none; max-width: none; } }
 .toast span { min-width: 0; flex: 1; }
 .toast button { white-space: nowrap; flex: none; background: transparent; border: 1px solid rgba(255,255,255,.3); color: #FFB27D; border-radius: 8px; padding: 4px 10px; font-weight: 700; }
+
+/* Tabs */
+.tabs { display: flex; gap: 4px; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 4px; width: fit-content; max-width: 100%; }
+.tabs button { border: 0; background: transparent; border-radius: 9px; padding: 8px 18px; font-weight: 700; color: var(--muted); }
+.tabs button[aria-selected="true"] { background: var(--net); color: #F4F6FA; }
+.view { display: grid; gap: 18px; }
+
+/* Simulator */
+:root { --amber: #C98512; --them-disc: #1B2638; --them-ring: #8FB8F0; --pick: #F2C230; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --amber: #F0B04A; --them-disc: #04080F; --them-ring: #8FB8F0; } }
+:root[data-theme="dark"] { --amber: #F0B04A; --them-disc: #04080F; --them-ring: #8FB8F0; }
+.sim { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 18px; align-items: start; }
+@media (max-width: 820px) { .sim { grid-template-columns: 1fr; } }
+.sim-court { background: var(--zone); border-radius: 14px; padding: 8px; box-shadow: var(--shadow); max-width: 520px; width: 100%; justify-self: center; }
+.sim-court svg { display: block; width: 100%; height: auto; touch-action: none; user-select: none; -webkit-user-select: none; }
+.sv-free { fill: var(--zone); }
+.sv-court { fill: var(--court); }
+.sv-grid { stroke: var(--court-ink); stroke-width: .015; opacity: .35; }
+.sv-zone { fill: none; stroke: var(--court-ink); stroke-width: .03; opacity: .55; stroke-dasharray: .12 .1; }
+.sv-line { stroke: var(--court-ink); stroke-width: .05; fill: none; }
+.sv-zno { fill: var(--court-ink); opacity: .28; font: 800 1.3px var(--f-display); text-anchor: middle; dominant-baseline: central; }
+.sv-dim { fill: #DCE5F3; font: 600 .34px var(--f-display); text-anchor: middle; dominant-baseline: central; letter-spacing: .02px; }
+.sv-net { stroke: var(--net); stroke-width: .16; }
+.sv-ant { stroke: #F4F6FA; stroke-width: .08; stroke-dasharray: .12 .12; }
+.sv-side { fill: #DCE5F3; font: 700 .36px var(--f-body); text-anchor: middle; dominant-baseline: central; }
+.sv-heat { fill: var(--lose); }
+.sv-shadow { fill: var(--net); opacity: .28; }
+.sv-route { stroke-width: .09; fill: none; stroke-linecap: round; }
+.sv-route.blocked { stroke: #B9C6DA; stroke-dasharray: .2 .14; }
+.sv-route.dig { stroke: var(--win); }
+.sv-route.hard { stroke: var(--amber); }
+.sv-route.gap, .sv-route.tool { stroke: var(--lose); }
+.sv-route.tool { stroke-dasharray: .2 .14; }
+.sv-end { stroke: var(--court-ink); stroke-width: .04; }
+.sv-end.blocked { fill: #B9C6DA; } .sv-end.dig { fill: var(--win); } .sv-end.hard { fill: var(--amber); } .sv-end.gap, .sv-end.tool { fill: var(--lose); }
+.sv-rlabel { font: 700 .3px var(--f-body); fill: var(--court-ink); paint-order: stroke; stroke: var(--net); stroke-width: .07; text-anchor: middle; }
+.sv-gapmark { fill: none; stroke: var(--pick); stroke-width: .06; stroke-dasharray: .14 .1; }
+.sv-gaptxt { fill: var(--pick); font: 700 .3px var(--f-body); text-anchor: middle; paint-order: stroke; stroke: var(--net); stroke-width: .07; }
+.sv-p { cursor: grab; }
+.sv-p:active { cursor: grabbing; }
+.sv-p:focus { outline: none; }
+.sv-p:focus-visible .sv-disc { stroke: var(--pick); stroke-width: .1; }
+.sv-p.us .sv-disc { fill: var(--surface); stroke: var(--court-ink); stroke-width: .06; }
+.sv-p.them .sv-disc { fill: var(--them-disc); stroke: var(--them-ring); stroke-width: .06; }
+.sv-p.pick .sv-disc { stroke: var(--pick); stroke-width: .11; }
+.sv-p .sv-no { font: 800 .4px var(--f-display); text-anchor: middle; dominant-baseline: central; }
+.sv-p.us .sv-no { fill: var(--ink); } .sv-p.them .sv-no { fill: #F4F6FA; }
+.sv-p .sv-role { font: 700 .24px var(--f-body); text-anchor: middle; fill: var(--court-ink); paint-order: stroke; stroke: rgba(0,0,0,.35); stroke-width: .05; }
+.sv-p .sv-hit { fill: transparent; }
+.sv-ball { fill: #FFF6D6; stroke: #1B2638; stroke-width: .04; }
+.sim-side { display: grid; gap: 14px; min-width: 0; }
+.sim-side .panel { gap: 12px; }
+.sim-side .seg { justify-self: start; }
+.ctl-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.ctl-row .btn { padding: 7px 12px; font-size: .88rem; }
+.check { display: inline-flex; align-items: center; gap: 6px; font-size: .88rem; color: var(--muted); }
+.check input { accent-color: var(--court); width: 16px; height: 16px; }
+.kpi { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.kpi .big { font: 800 2.6rem/1 var(--f-display); font-variant-numeric: tabular-nums; }
+.kpi .big.hi { color: var(--lose); } .kpi .big.mid { color: var(--amber); } .kpi .big.lo { color: var(--win); }
+.kpi .txt { color: var(--muted); font-size: .85rem; min-width: 0; flex: 1; }
+.advice { font-size: .88rem; display: grid; gap: 4px; margin: 0; padding-left: 1.2em; }
+.oc { display: inline-block; padding: 1px 8px; border-radius: 999px; font-size: .76rem; font-weight: 700; }
+.oc.blocked { background: var(--bg); color: var(--muted); border: 1px solid var(--line); }
+.oc.dig { background: var(--win-soft); color: var(--win); }
+.oc.hard { background: var(--bg); color: var(--amber); border: 1px solid var(--amber); }
+.oc.gap, .oc.tool { background: var(--lose-soft); color: var(--lose); }
+.sim-result { font-size: .9rem; min-height: 1.5em; }
+.sim-result strong { font-weight: 700; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 12px; font-size: .78rem; color: var(--muted); }
+.legend i { display: inline-block; width: 18px; height: 3px; border-radius: 2px; vertical-align: middle; margin-right: 4px; }
 </style>
 
 <div class="wrap">
+  <nav class="tabs" role="tablist" aria-label="功能">
+    <button type="button" role="tab" data-view="score" aria-selected="true">計分</button>
+    <button type="button" role="tab" data-view="sim" aria-selected="false">模擬對戰</button>
+  </nav>
+  <div class="view" id="view-score">
   <section class="board" aria-label="比分">
     <div class="board-row">
       <div class="team us">
@@ -238,6 +314,59 @@ tfoot td { font-weight: 700; border-bottom: 0; }
       </div>
       <ul class="log" id="log"></ul>
     </section>
+  </div>
+  </div>
+  <div class="view" id="view-sim" hidden>
+    <div class="sim">
+      <div class="sim-court">
+        <svg id="sim-svg" viewBox="-2.2 -1.6 13.4 21.2" role="img" aria-label="模擬球場：上半場對方、下半場我方，可拖曳球員"></svg>
+      </div>
+      <div class="sim-side">
+        <section class="panel">
+          <div class="panel-head"><h2>進攻設定</h2><span class="label">拖曳球員調整站位</span></div>
+          <div class="seg" role="group" aria-label="進攻方">
+            <button type="button" data-attack="them" aria-pressed="true">對方進攻</button>
+            <button type="button" data-attack="us" aria-pressed="false">我方進攻</button>
+          </div>
+          <p class="empty" style="padding:0" id="sim-hint"></p>
+          <div class="ctl-row">
+            <button class="btn" type="button" id="sim-auto">自動排防守站位</button>
+            <button class="btn" type="button" id="sim-base">回到基本站位</button>
+          </div>
+          <div class="ctl-row">
+            <button class="btn" type="button" id="sim-rot-us">我方輪轉 ↻</button>
+            <button class="btn" type="button" id="sim-rot-them">對方輪轉 ↻</button>
+            <span class="label" id="sim-rot"></span>
+          </div>
+          <div class="ctl-row">
+            <label class="check"><input type="checkbox" id="sim-heat" checked>防守空檔熱區</label>
+            <label class="check"><input type="checkbox" id="sim-shadow" checked>攔網陰影</label>
+          </div>
+          <div class="legend">
+            <span><i style="background:var(--lose)"></i>空檔 / 打手</span>
+            <span><i style="background:var(--amber)"></i>勉強救</span>
+            <span><i style="background:var(--win)"></i>可防起</span>
+            <span><i style="background:#B9C6DA"></i>被攔網</span>
+          </div>
+        </section>
+        <section class="panel">
+          <div class="panel-head"><h2>球路分析</h2><span class="label" id="sim-attacker"></span></div>
+          <div class="kpi"><span class="big" id="sim-rate">–</span><span class="txt" id="sim-rate-txt"></span></div>
+          <div class="table-scroll"><table id="sim-routes"></table></div>
+          <ul class="advice" id="sim-advice"></ul>
+        </section>
+        <section class="panel">
+          <div class="panel-head"><h2>模擬來球</h2><span class="label" id="sim-count"></span></div>
+          <div class="ctl-row">
+            <button class="btn" type="button" id="sim-one">模擬一球</button>
+            <button class="btn" type="button" id="sim-100">連續模擬 100 球</button>
+            <button class="btn" type="button" id="sim-clear">清除統計</button>
+          </div>
+          <div class="sim-result" id="sim-result" aria-live="polite">按「模擬一球」，球會依球路機率飛出，並判定得失分。</div>
+          <div class="breakdown" id="sim-tally"></div>
+        </section>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -671,6 +800,498 @@ tfoot td { font-weight: 700; border-bottom: 0; }
     toast('已開始新比賽（保留隊名與球員）', false);
   });
 
+  window.vbScorer = { players: () => state.players, teams: () => state.teams };
   render();
+})();
+</script>
+<script>
+(function () {
+  const SIM_KEY = 'vb-sim-v1';
+  const NS = 'http://www.w3.org/2000/svg';
+  const R = 0.46; // 球員圓圈半徑（公尺）
+
+  // 5-1 陣容的第一輪站位：舉球 1 號位，大砲 2、5，攔中 3、6，背攻 4
+  const LINEUP = [
+    { id: 's', role: '舉球', rot: 1 }, { id: 'oh1', role: '大砲', rot: 2 }, { id: 'mb', role: '攔中', rot: 3 },
+    { id: 'opp', role: '背攻', rot: 4 }, { id: 'oh2', role: '大砲', rot: 5 }, { id: 'mb2', role: '攔中', rot: 6 }
+  ];
+  const OPP_NO = { s: '6', oh1: '10', mb: '2', opp: '8', oh2: '11', mb2: '5' };
+  // 基本站位（球員自己的視角：lx 從自己左邊算起，d 為離網距離）
+  const BASE = { 1: [7.5, 6.5], 2: [7.5, 1.8], 3: [4.5, 1.8], 4: [1.5, 1.8], 5: [1.5, 6.5], 6: [4.5, 7.2] };
+  const FRONT = [2, 3, 4];
+
+  const ROUTE_W = { cross: 0.28, line: 0.2, seam: 0.15, tip: 0.15, sharp: 0.12, tool: 0.1 };
+  const OUT = {
+    blocked: { label: '被攔網', p: 0.12 },
+    dig: { label: '可防起', p: 0.3 },
+    hard: { label: '勉強救', p: 0.6 },
+    gap: { label: '空檔', p: 0.9 },
+    tool: { label: '打手出界', p: 0.85 }
+  };
+
+  const $ = id => document.getElementById(id);
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+  const other = t => (t === 'us' ? 'them' : 'us');
+  const toWorld = (team, lx, d) => (team === 'us' ? [lx, 9 + d] : [9 - lx, 9 - d]);
+  const toLocal = (team, x, y) => (team === 'us' ? [x, y - 9] : [9 - x, 9 - y]);
+  const teamName = t => { const n = window.vbScorer && window.vbScorer.teams(); return n ? n[t] : (t === 'us' ? '我方' : '對方'); };
+
+  function makePlayers() {
+    const out = [];
+    ['us', 'them'].forEach(team => LINEUP.forEach(p => {
+      const [x, y] = toWorld(team, ...BASE[p.rot]);
+      out.push({ key: team + '-' + p.id, team, id: p.id, role: p.role, rot: p.rot, x, y });
+    }));
+    return out;
+  }
+  function fresh() {
+    return { attack: 'them', heat: true, shadow: true, selected: 'them-oh1', players: makePlayers(), tally: { n: 0, att: 0, def: 0, byRoute: {} } };
+  }
+  let sim = (function () {
+    try {
+      const s = JSON.parse(localStorage.getItem(SIM_KEY));
+      if (s && Array.isArray(s.players) && s.players.length === 12) return { ...fresh(), ...s };
+    } catch (e) {}
+    return fresh();
+  })();
+  const save = () => { try { localStorage.setItem(SIM_KEY, JSON.stringify(sim)); } catch (e) {} };
+
+  function numberOf(p) {
+    if (p.team === 'them') return OPP_NO[p.id];
+    const list = window.vbScorer && window.vbScorer.players();
+    const me = list && list.find(x => x.id === p.id);
+    return me && me.no ? me.no : '–';
+  }
+  const depthOf = p => Math.abs(p.y - 9);
+  const isFrontRot = p => FRONT.includes(p.rot);
+
+  function attacker() {
+    let a = sim.players.find(p => p.key === sim.selected && p.team === sim.attack);
+    if (!a) {
+      const mine = sim.players.filter(p => p.team === sim.attack && isFrontRot(p));
+      a = mine.find(p => p.role === '大砲') || mine[0];
+      sim.selected = a.key;
+    }
+    return a;
+  }
+
+  function zoneOf(team, x, y) {
+    const [lx, d] = toLocal(team, x, y);
+    const col = lx < 3 ? 0 : lx < 6 ? 1 : 2;
+    return d < 3 ? [4, 3, 2][col] : [5, 6, 1][col];
+  }
+
+  // 主分析：球路、攔網、防守距離
+  function analyse() {
+    const A = sim.attack, D = other(A);
+    const att = attacker();
+    const dirD = D === 'us' ? 1 : -1;
+    const attDepth = Math.max(depthOf(att), 0.4);
+    const C = { x: att.x, y: 9 - dirD * attDepth };
+    const defenders = sim.players.filter(p => p.team === D);
+    const blockers = defenders.filter(p => depthOf(p) <= 1.2 && p.x > -0.6 && p.x < 9.6);
+    const diggers = defenders.filter(p => !blockers.includes(p));
+
+    // 攔網手範圍，相鄰的合併成一道牆
+    const raw = blockers.map(b => [b.x - 0.55, b.x + 0.55]).sort((a, b) => a[0] - b[0]);
+    const segs = [];
+    raw.forEach(s => { const last = segs[segs.length - 1]; if (last && s[0] <= last[1] + 0.05) last[1] = Math.max(last[1], s[1]); else segs.push(s.slice()); });
+
+    const crossX = (tx, ty) => C.x + (9 - C.y) / (ty - C.y) * (tx - C.x);
+    const inShadow = (x, y) => { const xc = crossX(x, y); return segs.some(([a, b]) => xc >= a && xc <= b); };
+    const nearest = (list, x, y) => list.reduce((m, p) => Math.min(m, Math.hypot(p.x - x, p.y - y)), Infinity);
+
+    const front = attDepth <= 3.5;
+    const xa = C.x, L = xa < 4.5, mid = Math.abs(xa - 4.5) < 1.2;
+    const defs = [
+      { k: 'cross', label: '斜線', tx: L ? 7.6 : 1.4, d: 7.4 },
+      { k: 'line', label: '直線', tx: mid ? clamp(xa, 0.8, 8.2) : (L ? 0.7 : 8.3), d: 8.2 },
+      { k: 'seam', label: '中路', tx: 4.5 + (L ? 0.9 : -0.9), d: 5.4 }
+    ];
+    if (front) {
+      defs.push({ k: 'sharp', label: '小斜線', tx: L ? 8.4 : 0.6, d: 3.2 });
+      defs.push({ k: 'tip', label: '吊球', tx: clamp(xa + (L ? 1.3 : -1.3), 0.5, 8.5), d: 1.6 });
+    }
+    const facing = segs.some(([a, b]) => xa >= a - 0.6 && xa <= b + 0.6);
+    if (facing) defs.push({ k: 'tool', label: '打手出界', tx: L ? -1.3 : 10.3, d: 3 });
+
+    const routes = defs.map(r => {
+      const tx = r.tx, ty = 9 + dirD * r.d;
+      let outcome, dist = null;
+      if (r.k === 'tool') outcome = 'tool';
+      else if (r.k !== 'tip' && inShadow(tx, ty)) outcome = 'blocked';
+      else {
+        dist = nearest(r.k === 'tip' ? defenders : diggers, tx, ty);
+        outcome = dist <= 1.6 ? 'dig' : dist <= 2.6 ? 'hard' : 'gap';
+      }
+      return { ...r, tx, ty, outcome, dist, w: ROUTE_W[r.k], p: OUT[outcome].p, zone: r.k === 'tool' ? '界外' : zoneOf(D, tx, ty) + ' 號區' };
+    });
+    const wsum = routes.reduce((s, r) => s + r.w, 0);
+    const rate = routes.reduce((s, r) => s + r.w * r.p, 0) / wsum;
+
+    // 空檔熱區（0.5 公尺格）
+    const heat = [];
+    let gap = null;
+    for (let lx = 0.25; lx < 9; lx += 0.5) {
+      for (let d = 0.25; d < 9; d += 0.5) {
+        const [x, y] = toWorld(D, lx, d);
+        const shaded = inShadow(x, y) && d > 1;
+        let dd = nearest(d < 2 ? defenders : diggers, x, y);
+        if (shaded) dd *= 0.4;
+        heat.push({ x, y, v: dd });
+        if (d >= 1.5 && (!gap || dd > gap.v)) gap = { x, y, v: dd, raw: nearest(diggers, x, y) };
+      }
+    }
+
+    // 攔網陰影多邊形
+    const yEnd = 9 + dirD * 9;
+    const shadows = segs.map(([a, b]) => {
+      const t = (yEnd - C.y) / (9 - C.y);
+      return [[a, 9], [b, 9], [C.x + t * (b - C.x), yEnd], [C.x + t * (a - C.x), yEnd]];
+    });
+
+    return { A, D, att, C, front, blockers, diggers, routes, rate, heat, gap, shadows, segs, L };
+  }
+
+  function el(tag, attrs, text) {
+    const n = document.createElementNS(NS, tag);
+    for (const k in attrs) n.setAttribute(k, attrs[k]);
+    if (text != null) n.textContent = text;
+    return n;
+  }
+
+  function drawStatic(svg) {
+    svg.innerHTML = '';
+    const defs = el('defs', {});
+    const cp = el('clipPath', { id: 'sv-clip' });
+    cp.appendChild(el('rect', { x: 0, y: 0, width: 9, height: 18 }));
+    defs.appendChild(cp);
+    svg.appendChild(defs);
+    svg.appendChild(el('rect', { class: 'sv-free', x: -2.2, y: -1.6, width: 13.4, height: 21.2 }));
+    svg.appendChild(el('rect', { class: 'sv-court', x: 0, y: 0, width: 9, height: 18 }));
+    const g = el('g', {});
+    for (let i = 1; i < 9; i++) g.appendChild(el('line', { class: 'sv-grid', x1: i, y1: 0, x2: i, y2: 18 }));
+    for (let i = 1; i < 18; i++) if (i !== 9) g.appendChild(el('line', { class: 'sv-grid', x1: 0, y1: i, x2: 9, y2: i }));
+    // 每邊 6 個區：前場 3 公尺、後場 6 公尺
+    ['us', 'them'].forEach(team => {
+      [[4, 0, 0], [3, 3, 0], [2, 6, 0], [5, 0, 3], [6, 3, 3], [1, 6, 3]].forEach(([no, lx, d]) => {
+        const h = d === 0 ? 3 : 6;
+        const [x1, y1] = toWorld(team, lx, d), [x2, y2] = toWorld(team, lx + 3, d + h);
+        const x = Math.min(x1, x2), y = Math.min(y1, y2);
+        g.appendChild(el('rect', { class: 'sv-zone', x, y, width: 3, height: h }));
+        g.appendChild(el('text', { class: 'sv-zno', x: x + 1.5, y: y + h / 2 }, no));
+      });
+    });
+    svg.appendChild(g);
+    svg.appendChild(el('rect', { class: 'sv-line', x: 0, y: 0, width: 9, height: 18 }));
+    [6, 12].forEach(y => svg.appendChild(el('line', { class: 'sv-line', x1: 0, y1: y, x2: 9, y2: y })));
+    // 尺寸標示
+    [[7.5, '3m 前場'], [3, '6m 後場'], [10.5, '3m 前場'], [15, '6m 後場']].forEach(([y, t]) => {
+      svg.appendChild(el('text', { class: 'sv-dim', x: -1.1, y, transform: 'rotate(-90 -1.1 ' + y + ')' }, t));
+    });
+    svg.appendChild(el('text', { class: 'sv-dim', x: 4.5, y: 18.55 }, '9m'));
+    svg.appendChild(el('text', { class: 'sv-side', x: 4.5, y: -0.9, id: 'sv-name-them' }, ''));
+    svg.appendChild(el('text', { class: 'sv-side', x: 4.5, y: 19.1, id: 'sv-name-us' }, ''));
+    ['heat', 'shadow', 'routes', 'players', 'fx'].forEach(id => {
+      const layer = el('g', { id: 'sv-' + id });
+      if (id === 'heat' || id === 'shadow') layer.setAttribute('clip-path', 'url(#sv-clip)');
+      svg.appendChild(layer);
+      if (id === 'shadow') {
+        svg.appendChild(el('line', { class: 'sv-net', x1: -0.6, y1: 9, x2: 9.6, y2: 9 }));
+        [0, 9].forEach(x => svg.appendChild(el('line', { class: 'sv-ant', x1: x, y1: 8.6, x2: x, y2: 9.4 })));
+      }
+    });
+  }
+
+  let last = null;
+
+  function render() {
+    const svg = $('sim-svg');
+    if (!svg.firstChild) drawStatic(svg);
+    const a = analyse();
+    last = a;
+    $('sv-name-them').textContent = teamName('them') + (a.A === 'them' ? '（進攻）' : '（防守）');
+    $('sv-name-us').textContent = teamName('us') + (a.A === 'us' ? '（進攻）' : '（防守）');
+
+    const heat = $('sv-heat');
+    heat.innerHTML = '';
+    if (sim.heat) a.heat.forEach(c => {
+      const o = clamp((c.v - 1.6) / 2.4, 0, 0.6);
+      if (o > 0.02) heat.appendChild(el('rect', { class: 'sv-heat', x: c.x - 0.25, y: c.y - 0.25, width: 0.5, height: 0.5, opacity: o.toFixed(2) }));
+    });
+
+    const sh = $('sv-shadow');
+    sh.innerHTML = '';
+    if (sim.shadow) a.shadows.forEach(pts => sh.appendChild(el('polygon', { class: 'sv-shadow', points: pts.map(p => p.join(',')).join(' ') })));
+
+    const rt = $('sv-routes');
+    rt.innerHTML = '';
+    a.routes.forEach(r => {
+      rt.appendChild(el('line', { class: 'sv-route ' + r.outcome, x1: a.C.x, y1: a.C.y, x2: r.tx, y2: r.ty }));
+      rt.appendChild(el('circle', { class: 'sv-end ' + r.outcome, cx: r.tx, cy: r.ty, r: 0.17 }));
+      const ly = r.ty + (a.D === 'us' ? 0.5 : -0.3);
+      rt.appendChild(el('text', { class: 'sv-rlabel', x: clamp(r.tx, -1.4, 10.4), y: ly }, r.label));
+    });
+    if (a.gap && a.gap.raw > 2.2) {
+      rt.appendChild(el('circle', { class: 'sv-gapmark', cx: a.gap.x, cy: a.gap.y, r: 0.7 }));
+      rt.appendChild(el('text', { class: 'sv-gaptxt', x: a.gap.x, y: a.gap.y + 0.1 }, '空檔'));
+    }
+
+    const pl = $('sv-players');
+    pl.innerHTML = '';
+    sim.players.forEach(p => {
+      const g = el('g', { class: 'sv-p ' + p.team + (p.key === a.att.key ? ' pick' : ''), 'data-key': p.key, tabindex: 0, role: 'button',
+        'aria-label': (p.team === 'us' ? teamName('us') : teamName('them')) + ' ' + p.role + ' ' + numberOf(p) + ' 號，' + p.rot + ' 號位，方向鍵移動', transform: 'translate(' + p.x.toFixed(2) + ' ' + p.y.toFixed(2) + ')' });
+      g.appendChild(el('circle', { class: 'sv-hit', r: R + 0.25 }));
+      g.appendChild(el('circle', { class: 'sv-disc', r: R }));
+      g.appendChild(el('text', { class: 'sv-no', y: -0.02 }, numberOf(p)));
+      g.appendChild(el('text', { class: 'sv-role', y: R + 0.3 }, p.role + ' ' + p.rot));
+      pl.appendChild(g);
+    });
+    if (dragKey) { const n = pl.querySelector('[data-key="' + dragKey + '"]'); if (n) pl.appendChild(n); }
+
+    renderPanel(a);
+  }
+
+  function renderPanel(a) {
+    document.querySelectorAll('[data-attack]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.attack === sim.attack)));
+    $('sim-heat').checked = sim.heat;
+    $('sim-shadow').checked = sim.shadow;
+    const atkName = teamName(a.A), defName = teamName(a.D);
+    $('sim-hint').textContent = '拖曳' + atkName + '的攻擊手（黃色外框），會畫出他可能的球路；拖曳' + defName + '的球員，可以調整攔網和防守位置。';
+    $('sim-attacker').textContent = atkName + ' ' + a.att.role + ' #' + numberOf(a.att) + (a.front ? '・前排攻擊' : '・後排攻擊');
+    const rotOf = t => sim.players.find(p => p.team === t && p.id === 's').rot;
+    $('sim-rot').textContent = '舉球位置：' + teamName('us') + ' ' + rotOf('us') + ' 號位・' + teamName('them') + ' ' + rotOf('them') + ' 號位';
+
+    const pct = Math.round(a.rate * 100);
+    const big = $('sim-rate');
+    big.textContent = pct + '%';
+    big.className = 'big ' + (pct >= 60 ? 'hi' : pct >= 40 ? 'mid' : 'lo');
+    $('sim-rate-txt').textContent = atkName + '這一攻的預估得分率（依各球路常見比例加權）。' + (a.blockers.length ? defName + '目前 ' + a.blockers.length + ' 人攔網。' : defName + '沒有人在網前攔網。');
+
+    $('sim-routes').innerHTML = '<thead><tr><th>球路</th><th>落點</th><th>常見比例</th><th>判定</th><th>得分率</th></tr></thead><tbody>' +
+      a.routes.map(r => '<tr><td>' + esc(r.label) + '</td><td>' + esc(r.zone) + '</td><td>' + Math.round(r.w * 100) + '%</td><td><span class="oc ' + r.outcome + '">' + OUT[r.outcome].label + (r.dist != null ? ' ' + r.dist.toFixed(1) + 'm' : '') + '</span></td><td>' + Math.round(r.p * 100) + '%</td></tr>').join('') + '</tbody>';
+
+    const tips = [];
+    const weak = a.routes.filter(r => r.outcome === 'gap');
+    if (!a.blockers.length && a.front) tips.push('網前沒有攔網手：把攔中或' + (a.L ? '左' : '右') + '邊的前排拖到攻擊手正前方、離網 1 公尺內。');
+    if (a.blockers.length === 1 && a.front) tips.push('只有單人攔網，再補一位前排並肩攔，可以把陰影變寬。');
+    weak.forEach(r => tips.push(r.label + '落在' + r.zone + '沒人守，最近的防守者也在 ' + r.dist.toFixed(1) + ' 公尺外。'));
+    if (a.routes.some(r => r.k === 'tool')) tips.push('攔網手正對攻擊手，小心打手出界：外側攔網手的手要往場內轉。');
+    if (a.routes.some(r => r.k === 'tip' && r.outcome !== 'dig')) tips.push('吊球區沒人補，讓沒攔網的前排退到 3 公尺線附近。');
+    if (a.gap && a.gap.raw > 2.2) tips.push('最大空檔在' + zoneOf(a.D, a.gap.x, a.gap.y) + ' 號區（黃色虛線圈），距離最近的防守者 ' + a.gap.raw.toFixed(1) + ' 公尺。');
+    if (!tips.length) tips.push('這個站位守得不錯：主要球路都有人或有攔網陰影覆蓋。');
+    tips.push('不知道怎麼站？按「自動排防守站位」，會依攻擊手位置排出雙人攔網加邊線防守。');
+    $('sim-advice').innerHTML = tips.map(t => '<li>' + esc(t) + '</li>').join('');
+
+    renderTally();
+  }
+
+  function renderTally() {
+    const t = sim.tally;
+    $('sim-count').textContent = t.n ? '已模擬 ' + t.n + ' 球' : '';
+    if (!t.n) { $('sim-tally').innerHTML = ''; return; }
+    const rows = Object.entries(t.byRoute).sort((x, y) => (y[1].att + y[1].def) - (x[1].att + x[1].def)).map(([k, v]) =>
+      '<div class="bd-row"><span class="who">' + esc(v.label) + '</span><span class="bd-tags"><span class="tag l">進攻得分 ×' + v.att + '</span><span class="tag w">守住 ×' + v.def + '</span></span></div>').join('');
+    $('sim-tally').innerHTML = '<div class="bd-row"><span class="who">合計</span><span class="bd-tags"><span class="tag l">進攻得分 ' + t.att + '（' + Math.round(t.att / t.n * 100) + '%）</span><span class="tag w">防守守住 ' + t.def + '</span></span></div>' + rows;
+  }
+
+  function pickRoute(routes) {
+    const sum = routes.reduce((s, r) => s + r.w, 0);
+    let x = Math.random() * sum;
+    for (const r of routes) { x -= r.w; if (x <= 0) return r; }
+    return routes[routes.length - 1];
+  }
+
+  function play(a) {
+    const r = pickRoute(a.routes);
+    const scored = Math.random() < r.p;
+    const t = sim.tally;
+    t.n++;
+    scored ? t.att++ : t.def++;
+    const b = t.byRoute[r.k] || (t.byRoute[r.k] = { label: r.label, att: 0, def: 0 });
+    scored ? b.att++ : b.def++;
+    return { r, scored };
+  }
+
+  function describe(a, res) {
+    const atk = teamName(a.A), def = teamName(a.D);
+    const { r, scored } = res;
+    let how;
+    if (r.outcome === 'blocked') how = scored ? '攔網沒攔死，球彈落在' + r.zone : '被攔網擋下';
+    else if (r.outcome === 'tool') how = scored ? '打到攔網手出界' : '打手出界，但判定沒碰到手，出界';
+    else how = '落在' + r.zone + (scored ? '，' + def + '沒救起' : '，' + def + '防起反擊');
+    return '<strong>' + esc(atk + '・' + r.label) + '</strong>：' + esc(how) + ' → <strong style="color:var(' + (scored ? '--lose' : '--win') + ')">' + esc((scored ? atk : def) + '得分') + '</strong>';
+  }
+
+  let animating = false;
+  function simulateOne() {
+    if (animating) return;
+    const a = analyse();
+    const res = play(a);
+    save();
+    const fx = $('sv-fx');
+    const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const finish = () => { animating = false; $('sim-result').innerHTML = describe(a, res); renderTally(); };
+    if (reduce) { finish(); return; }
+    animating = true;
+    fx.innerHTML = '';
+    const ball = el('circle', { class: 'sv-ball', cx: a.C.x, cy: a.C.y, r: 0.22 });
+    fx.appendChild(ball);
+    const r = res.r;
+    const dur = r.k === 'tip' ? 750 : 520;
+    // 被攔網的球停在網上再彈回
+    const stopT = r.outcome === 'blocked' && !res.scored ? (9 - a.C.y) / (r.ty - a.C.y) : 1;
+    const t0 = performance.now();
+    (function step(now) {
+      const k = Math.min(1, (now - t0) / dur);
+      let u = k * stopT;
+      let x = a.C.x + (r.tx - a.C.x) * u, y = a.C.y + (r.ty - a.C.y) * u;
+      const lift = r.k === 'tip' ? Math.sin(Math.PI * k) * 0.18 : Math.sin(Math.PI * k) * 0.08;
+      ball.setAttribute('cx', x.toFixed(3));
+      ball.setAttribute('cy', y.toFixed(3));
+      ball.setAttribute('r', (0.22 + lift).toFixed(3));
+      if (k < 1) requestAnimationFrame(step);
+      else { setTimeout(() => { if (ball.parentNode) ball.remove(); }, 900); finish(); }
+    })(t0);
+  }
+
+  // 自動防守：雙人攔網 + 不攔網的前排退 3 公尺線 + 後排邊線防守
+  function autoDefense() {
+    const a = analyse();
+    const D = a.D;
+    const [lxa] = toLocal(D, a.C.x, a.C.y);
+    const L = lxa < 4.5;
+    const inner = clamp(lxa + (L ? 0.55 : -0.55), 1, 8);
+    const outer = clamp(lxa + (L ? -0.55 : 0.55), 0.5, 8.5);
+    const spots = L
+      ? { 4: [outer, 0.6], 3: [inner, 0.6], 2: [7.4, 3.2], 5: [0.9, 7], 6: [4.5, 8.2], 1: [7.8, 6] }
+      : { 2: [outer, 0.6], 3: [inner, 0.6], 4: [1.6, 3.2], 1: [8.1, 7], 6: [4.5, 8.2], 5: [1.2, 6] };
+    if (!a.front) { // 後排攻擊：攔網退一點，防守拉深
+      Object.keys(spots).forEach(k => { if (FRONT.includes(+k) && spots[k][1] < 1) spots[k][1] = 0.8; });
+    }
+    sim.players.filter(p => p.team === D).forEach(p => { [p.x, p.y] = toWorld(D, ...spots[p.rot]); });
+    save();
+    render();
+  }
+
+  function basePositions() {
+    sim.players.forEach(p => { [p.x, p.y] = toWorld(p.team, ...BASE[p.rot]); });
+    save();
+    render();
+  }
+
+  function rotate(team) {
+    // 順時針輪轉：2→1、1→6、6→5、5→4、4→3、3→2
+    sim.players.filter(p => p.team === team).forEach(p => {
+      p.rot = p.rot === 1 ? 6 : p.rot - 1;
+      [p.x, p.y] = toWorld(team, ...BASE[p.rot]);
+    });
+    const sel = sim.players.find(p => p.key === sim.selected);
+    if (sel && sel.team === team && !isFrontRot(sel)) sim.selected = '';
+    attacker();
+    save();
+    render();
+  }
+
+  // 拖曳
+  let dragKey = null, dragOff = [0, 0];
+  function svgPoint(svg, e) {
+    const pt = svg.createSVGPoint();
+    pt.x = e.clientX; pt.y = e.clientY;
+    const m = svg.getScreenCTM();
+    return m ? pt.matrixTransform(m.inverse()) : { x: 0, y: 0 };
+  }
+  function place(p, x, y) {
+    p.x = clamp(x, -1.7, 10.7);
+    p.y = p.team === 'us' ? clamp(y, 9 + R * 0.6, 19.2) : clamp(y, -1.2, 9 - R * 0.6);
+  }
+
+  function bind() {
+    const svg = $('sim-svg');
+    svg.addEventListener('pointerdown', e => {
+      const g = e.target.closest('[data-key]');
+      if (!g) return;
+      const p = sim.players.find(x => x.key === g.dataset.key);
+      dragKey = p.key;
+      const pt = svgPoint(svg, e);
+      dragOff = [p.x - pt.x, p.y - pt.y];
+      if (p.team === sim.attack) sim.selected = p.key;
+      try { svg.setPointerCapture(e.pointerId); } catch (err) {}
+      e.preventDefault();
+      render();
+    });
+    svg.addEventListener('pointermove', e => {
+      if (!dragKey) return;
+      const p = sim.players.find(x => x.key === dragKey);
+      const pt = svgPoint(svg, e);
+      place(p, pt.x + dragOff[0], pt.y + dragOff[1]);
+      render();
+    });
+    const end = () => { if (dragKey) { dragKey = null; save(); render(); } };
+    svg.addEventListener('pointerup', end);
+    svg.addEventListener('pointercancel', end);
+    svg.addEventListener('keydown', e => {
+      const g = e.target.closest('[data-key]');
+      if (!g) return;
+      const p = sim.players.find(x => x.key === g.dataset.key);
+      const step = e.shiftKey ? 1 : 0.25;
+      const mv = { ArrowLeft: [-step, 0], ArrowRight: [step, 0], ArrowUp: [0, -step], ArrowDown: [0, step] }[e.key];
+      if (mv) { place(p, p.x + mv[0], p.y + mv[1]); }
+      else if (e.key === 'Enter' || e.key === ' ') { if (p.team === sim.attack) sim.selected = p.key; }
+      else return;
+      e.preventDefault();
+      save();
+      render();
+      const again = svg.querySelector('[data-key="' + p.key + '"]');
+      if (again) again.focus();
+    });
+
+    document.querySelectorAll('[data-attack]').forEach(b => b.addEventListener('click', () => {
+      sim.attack = b.dataset.attack;
+      sim.selected = '';
+      attacker();
+      save();
+      render();
+    }));
+    $('sim-heat').addEventListener('change', e => { sim.heat = e.target.checked; save(); render(); });
+    $('sim-shadow').addEventListener('change', e => { sim.shadow = e.target.checked; save(); render(); });
+    $('sim-auto').addEventListener('click', autoDefense);
+    $('sim-base').addEventListener('click', basePositions);
+    $('sim-rot-us').addEventListener('click', () => rotate('us'));
+    $('sim-rot-them').addEventListener('click', () => rotate('them'));
+    $('sim-one').addEventListener('click', simulateOne);
+    $('sim-100').addEventListener('click', () => {
+      const a = analyse();
+      for (let i = 0; i < 100; i++) play(a);
+      save();
+      const t = sim.tally;
+      $('sim-result').innerHTML = '連續模擬 100 球完成。累計 ' + t.n + ' 球中，' + esc(teamName(a.A)) + '進攻得分 ' + t.att + ' 球。';
+      renderTally();
+    });
+    $('sim-clear').addEventListener('click', () => {
+      sim.tally = { n: 0, att: 0, def: 0, byRoute: {} };
+      save();
+      $('sim-result').textContent = '統計已清除。';
+      renderTally();
+    });
+  }
+
+  // 分頁切換
+  function show(view) {
+    $('view-score').hidden = view !== 'score';
+    $('view-sim').hidden = view !== 'sim';
+    document.querySelectorAll('[data-view]').forEach(b => b.setAttribute('aria-selected', String(b.dataset.view === view)));
+    if (view === 'sim') render();
+    try { localStorage.setItem('vb-view', view); } catch (e) {}
+  }
+  document.querySelectorAll('[data-view]').forEach(b => b.addEventListener('click', () => show(b.dataset.view)));
+
+  bind();
+  let start = 'score';
+  try { start = localStorage.getItem('vb-view') || 'score'; } catch (e) {}
+  if (location.hash === '#sim') start = 'sim';
+  show(start === 'sim' ? 'sim' : 'score');
 })();
 </script>
