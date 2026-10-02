@@ -1,6 +1,6 @@
 import os
 import urllib.parse
-from flask import Flask, request, abort
+from flask import Flask, request, abort, send_from_directory
 from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
 from linebot.models import (
@@ -85,6 +85,13 @@ def handle_message(event):
         event.reply_token,
         TextSendMessage(text=reply_text)
     )
+
+VOLLEYBALL_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "volleyball")
+
+@app.route("/volleyball", methods=["GET"])
+@app.route("/volleyball/", methods=["GET"])
+def volleyball():
+    return send_from_directory(VOLLEYBALL_DIR, "index.html")
 
 @app.route("/", methods=["GET"])
 def health():
