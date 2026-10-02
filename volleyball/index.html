@@ -83,7 +83,7 @@ h2 { font-family: var(--f-display); font-weight: 700; font-size: 1.35rem; letter
 .attack-line { position: absolute; left: 0; right: 0; top: 46%; border-top: 3px solid var(--court-ink); opacity: .9; }
 .attack-line span { position: absolute; left: 8px; top: 2px; font: 600 .66rem var(--f-display); letter-spacing: .14em; color: var(--court-ink); opacity: .85; }
 .row { display: flex; justify-content: space-around; gap: 6px; position: relative; z-index: 1; }
-.row.back { padding-top: 34px; justify-content: space-evenly; }
+.row.back { padding-top: 34px; }
 .player { display: grid; justify-items: center; gap: 4px; background: none; border: 0; padding: 4px; border-radius: 16px; min-width: 0; }
 .disc { width: clamp(64px, 18vw, 92px); aspect-ratio: 1; max-width: 100%; border-radius: 50%; background: var(--surface); color: var(--ink); border: 4px solid var(--court-ink); display: grid; place-content: center; text-align: center; box-shadow: 0 4px 0 rgba(0,0,0,.18); transition: transform .12s ease, box-shadow .12s ease; position: relative; }
 .player:hover .disc { transform: translateY(-2px); box-shadow: 0 7px 0 rgba(0,0,0,.18); }
@@ -91,13 +91,15 @@ h2 { font-family: var(--f-display); font-weight: 700; font-size: 1.35rem; letter
 .disc .no { font: 800 clamp(1.5rem, 6vw, 2.1rem)/1 var(--f-display); font-variant-numeric: tabular-nums; }
 .disc .role { font-size: .74rem; font-weight: 700; color: var(--court); }
 .disc.s { border-color: #F2C230; }
-.disc.l { background: var(--net); color: #F4F6FA; }
-.p-name { color: var(--court-ink); font-weight: 700; font-size: .85rem; max-width: 9em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-shadow: 0 1px 2px rgba(0,0,0,.25); }
+.disc.l { background: var(--net); color: #F4F6FA; border-color: #8FD3FF; }
+.disc.l .role { color: #8FD3FF; }
+.p-name { color: var(--court-ink); font-weight: 700; font-size: clamp(.74rem, 3vw, .85rem); max-width: 8em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-shadow: 0 1px 2px rgba(0,0,0,.25); }
 .tally { display: flex; gap: 4px; font: 700 .78rem var(--f-display); font-variant-numeric: tabular-nums; }
 .tally b { padding: 0 6px; border-radius: 6px; font-weight: 700; }
 .tally .w { background: var(--win-soft); color: var(--win); }
 .tally .l { background: var(--lose-soft); color: var(--lose); }
-.team-row { display: flex; justify-content: center; margin-top: 18px; }
+.team-row { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 12px 20px; margin-top: 18px; }
+.team-row .p-name { color: #fff; }
 .team-btn { display: flex; align-items: center; gap: 12px; border: 2px dashed rgba(255,255,255,.55); background: rgba(0,0,0,.12); color: #fff; border-radius: 999px; padding: 6px 18px 6px 6px; }
 .team-btn .mini { width: 44px; height: 44px; border-radius: 50%; background: var(--net); display: grid; place-content: center; font: 800 .9rem var(--f-display); }
 .team-btn .txt { text-align: left; line-height: 1.25; }
@@ -214,7 +216,7 @@ tfoot td { font-weight: 700; border-bottom: 0; }
       <div class="row back" id="row-back"></div>
     </div>
     <div class="team-row" id="team-row"></div>
-    <p class="hint">點選球員圈圈 → 選擇得分或失分項目。對方失誤或無法歸屬的失分請點「團隊 / 對方」。</p>
+    <p class="hint">點選球員圈圈 → 選擇得分或失分項目。自由球員在場外，只能記防守、接發相關的得失分。對方失誤或無法歸屬的失分請點「團隊 / 對方」。</p>
   </section>
 
   <div class="panels">
@@ -248,14 +250,18 @@ tfoot td { font-weight: 700; border-bottom: 0; }
 (function () {
   const KEY = 'vb-scorer-v1';
 
-  // 正規陣容：兩個大砲（主攻）、一個攔中、一個舉球、一個背攻（舉對）
+  // 正規陣容：兩個大砲（主攻）、兩個攔中、一個舉球、一個背攻（舉對），外加自由球員
+  // pos 為場上位置號碼：前排左→右 4、3、2，後排左→右 5、6、1
   const DEFAULT_PLAYERS = [
     { id: 'oh1', role: '大砲', full: '大砲（主攻）一', pos: 4, row: 'front', no: '7',  name: '' },
-    { id: 'mb',  role: '攔中', full: '攔中（快攻）',   pos: 3, row: 'front', no: '12', name: '' },
+    { id: 'mb',  role: '攔中', full: '攔中（快攻）一', pos: 3, row: 'front', no: '12', name: '' },
     { id: 'opp', role: '背攻', full: '背攻（舉對）',   pos: 2, row: 'front', no: '9',  name: '' },
     { id: 'oh2', role: '大砲', full: '大砲（主攻）二', pos: 5, row: 'back',  no: '4',  name: '' },
-    { id: 's',   role: '舉球', full: '舉球（二傳）',   pos: 1, row: 'back',  no: '3',  name: '' }
+    { id: 'mb2', role: '攔中', full: '攔中（快攻）二', pos: 6, row: 'back',  no: '15', name: '' },
+    { id: 's',   role: '舉球', full: '舉球（二傳）',   pos: 1, row: 'back',  no: '3',  name: '' },
+    { id: 'l',   role: '自由', full: '自由球員',       pos: 0, row: 'libero', no: '1', name: '' }
   ];
+  const ROW_ORDER = { front: [4, 3, 2], back: [5, 6, 1] };
 
   // 球員得分 / 失分項目（分組）
   const PLAYER_ACTS = {
@@ -313,8 +319,30 @@ tfoot td { font-weight: 700; border-bottom: 0; }
     ]
   };
 
+  // 自由球員不能發球、攔網、在網上沿高度完成攻擊，所以只記協助得分與防守、接發相關失分
+  const LIBERO_ACTS = {
+    win: [
+      { g: '協助得分', items: [
+        ['l_dig', '防守起球得分', '救起後隊友得分'], ['l_rcv', '一傳到位得分', '接發到位後得分'],
+        ['l_cover', '保護起球得分', '攔網保護後得分']
+      ]}
+    ],
+    lose: [
+      { g: '接發 / 防守', items: [
+        ['rcv', '接發失誤', '一傳被 Ace'], ['dig', '防守失誤', '漏球 / 救不起'],
+        ['cover2', '保護不及', '攔網後沒補到'], ['set', '舉球失誤', '二傳時舉不到位']
+      ]},
+      { g: '犯規', items: [
+        ['l_front', '前區上手舉球違規', '隊友在網上攻擊'], ['l_atk', '自由球員違規進攻', ''],
+        ['net', '觸網', ''], ['line', '踩線 / 越過中線', ''],
+        ['dbl', '連擊', ''], ['hold', '持球', ''],
+        ['l_sub', '替換違規', '']
+      ]}
+    ]
+  };
+
   const LABELS = {};
-  [PLAYER_ACTS, TEAM_ACTS].forEach(set => ['win', 'lose'].forEach(t => set[t].forEach(gr => gr.items.forEach(([k, l]) => { LABELS[k] = l; }))));
+  [PLAYER_ACTS, TEAM_ACTS, LIBERO_ACTS].forEach(set => ['win', 'lose'].forEach(t => set[t].forEach(gr => gr.items.forEach(([k, l]) => { LABELS[k] = l; }))));
 
   const ATTACK = ['atk', 'quick', 'back', 'tool', 'tip', 'dump', 'free', 'cover'];
 
@@ -337,7 +365,7 @@ tfoot td { font-weight: 700; border-bottom: 0; }
       if (raw) {
         const s = JSON.parse(raw);
         const base = fresh();
-        return { ...base, ...s, players: base.players.map(p => ({ ...p, ...(s.players || []).find(x => x.id === p.id) })) };
+        return { ...base, ...s, players: base.players.map(p => { const o = (s.players || []).find(x => x.id === p.id); return o ? { ...p, no: o.no, name: o.name } : p; }) };
       }
     } catch (e) {}
     return fresh();
@@ -429,18 +457,18 @@ tfoot td { font-weight: 700; border-bottom: 0; }
   function discHTML(p) {
     const t = tallyFor(p.id);
     return '<button class="player" type="button" data-pid="' + p.id + '" aria-label="' + esc(p.full + ' #' + p.no + ' 記錄得失分') + '">' +
-      '<span class="disc' + (p.id === 's' ? ' s' : '') + '"><span class="no">' + esc(p.no || '–') + '</span><span class="role">' + esc(p.role) + '</span></span>' +
+      '<span class="disc' + (p.id === 's' ? ' s' : p.id === 'l' ? ' l' : '') + '"><span class="no">' + esc(p.no || '–') + '</span><span class="role">' + esc(p.role) + '</span></span>' +
       '<span class="p-name">' + esc(p.name || p.full) + '</span>' +
       '<span class="tally"><b class="w">+' + t.w + '</b><b class="l">−' + t.l + '</b></span></button>';
   }
 
   function renderCourt() {
-    const front = state.players.filter(p => p.row === 'front').sort((a, b) => b.pos - a.pos);
-    const back = state.players.filter(p => p.row === 'back').sort((a, b) => b.pos - a.pos);
-    $('row-front').innerHTML = front.map(discHTML).join('');
-    $('row-back').innerHTML = back.map(discHTML).join('');
+    const byRow = row => ROW_ORDER[row].map(pos => state.players.find(p => p.row === row && p.pos === pos)).filter(Boolean);
+    $('row-front').innerHTML = byRow('front').map(discHTML).join('');
+    $('row-back').innerHTML = byRow('back').map(discHTML).join('');
     const t = tallyFor('team');
-    $('team-row').innerHTML = '<button class="team-btn" type="button" data-pid="team"><span class="mini">隊</span><span class="txt">團隊 / 對方<small>對方失誤 +' + t.w + '・對方得分 −' + t.l + '</small></span></button>';
+    const libero = state.players.find(p => p.row === 'libero');
+    $('team-row').innerHTML = (libero ? discHTML(libero) : '') + '<button class="team-btn" type="button" data-pid="team"><span class="mini">隊</span><span class="txt">團隊 / 對方<small>對方失誤 +' + t.w + '・對方得分 −' + t.l + '</small></span></button>';
   }
 
   function scopedEvents(c) {
@@ -514,7 +542,7 @@ tfoot td { font-weight: 700; border-bottom: 0; }
   function renderSheet() {
     const p = playerById(openId);
     const isTeam = openId === 'team';
-    const acts = isTeam ? TEAM_ACTS : PLAYER_ACTS;
+    const acts = isTeam ? TEAM_ACTS : openId === 'l' ? LIBERO_ACTS : PLAYER_ACTS;
     const c = compute();
     const t = tallyFor(openId);
     const sheet = $('sheet');
