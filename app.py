@@ -1,14 +1,15 @@
 import os
 import re
 import urllib.parse
-from flask import Flask, request, abort
+from pathlib import Path
+from flask import Flask, request, abort, jsonify
 from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
 from linebot.models import (
     MessageEvent, TextMessage, TextSendMessage,
     FollowEvent
 )
-from invest import analyze, format_report
+from invest import analyze, format_report, to_dict
 
 app = Flask(__name__)
 
@@ -101,7 +102,31 @@ def handle_message(event):
         TextSendMessage(text=reply_text)
     )
 
+WEB_PAGE = (Path(__file__).parent / "web" / "index.html").read_text(encoding="utf-8")
+SYMBOL_RE = re.compile(r"^[A-Za-z0-9.^=\-]{1,16}$")
+
 @app.route("/", methods=["GET"])
+def index():
+    # web/index.html 是頁面片段（也用來產生靜態快照），這裡補上完整的 HTML 骨架
+    return (
+        '<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8">'
+        '<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">'
+        '<style>body{margin:0}[hidden]{display:none!important}</style></head><body>'
+        + WEB_PAGE + "</body></html>"
+    )
+
+@app.route("/api/analyze", methods=["GET"])
+def api_analyze():
+    symbol = request.args.get("symbol", "").strip()
+    if not SYMBOL_RE.match(symbol):
+        return jsonify(error="請輸入股票代號，例如 2330 或 AAPL。"), 400
+    use_ai = request.args.get("ai") != "0"
+    result = analyze(symbol, use_ai=use_ai)
+    if not result:
+        return jsonify(error=f"找不到股票代號「{symbol}」。台股請輸入數字代號（如 2330），美股請輸入英文代號（如 AAPL）。"), 404
+    return jsonify(to_dict(result))
+
+@app.route("/health", methods=["GET"])
 def health():
     return "LINE Bot is running! 🚀", 200
 

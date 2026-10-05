@@ -5,6 +5,7 @@ from datetime import datetime, timezone
 from .ai import ai_commentary
 from .data import fetch_news, resolve_symbol
 from .indicators import macd, pct_change, rsi, sma
+from .names import zh_name
 from .macro import FINANCE_QUERIES, POLITICS_QUERIES, market_factor, news_factor
 from .sentiment import score_news
 
@@ -76,7 +77,12 @@ def analyze(user_input: str, use_ai: bool = True) -> dict | None:
         return None
     is_taiwan = stock["symbol"].endswith((".TW", ".TWO"))
     code = stock["symbol"].split(".")[0]
-    stock_query = f"{code} 股價" if is_taiwan else f"{code} {stock['name']} stock"
+    zh = zh_name(code)
+    stock["zh"] = zh
+    if is_taiwan:
+        stock_query = f"{zh} {code}" if zh else f"{code} 股價"
+    else:
+        stock_query = f"{zh} {code} 股價" if zh else f"{code} {stock['name']} stock"
 
     with ThreadPoolExecutor(4) as ex:
         f_news = ex.submit(fetch_news, stock_query, 15)
@@ -125,6 +131,66 @@ def _ai_context(r: dict) -> str:
     return "\n".join(lines)
 
 
+def _rolling_sma(values: list[float], n: int) -> list[float | None]:
+    return [sma(values[: i + 1], n) for i in range(len(values))]
+
+
+def to_dict(r: dict, chart_days: int = 120) -> dict:
+    """轉成可 JSON 序列化的結構，供網頁 /api/analyze 使用。"""
+    s, f = r["stock"], r["factors"]
+    closes, meta = s["closes"], s["meta"]
+    ma20, ma60 = _rolling_sma(closes, 20), _rolling_sma(closes, 60)
+    tz_offset = meta.get("gmtoffset", 0)
+    dates = [datetime.fromtimestamp(t + tz_offset, timezone.utc).strftime("%Y-%m-%d") for t in s["timestamps"]]
+
+    def news(fac: dict) -> list[dict]:
+        scores = dict((t, sc) for sc, t in fac.get("scored", []))
+        return [
+            {
+                "title": it["title"],
+                "source": it["source"],
+                "link": it["link"],
+                "published": it["published"].isoformat() if it["published"] else None,
+                "score": scores.get(it["title"], 0),
+            }
+            for it in fac.get("items", [])
+        ]
+
+    factors = []
+    for k in WEIGHTS:
+        fac = f[k]
+        item = {"key": k, "label": LABELS[k], "weight": WEIGHTS[k], "score": round(fac["score"] * 100, 1)}
+        if "notes" in fac:
+            item["notes"] = fac["notes"]
+        if "items" in fac:
+            item.update(pos=fac["pos"], neg=fac["neg"], neu=fac["neu"], news=news(fac))
+        factors.append(item)
+
+    return {
+        "symbol": s["symbol"],
+        "name": s["name"],
+        "zh": s.get("zh"),
+        "currency": s["currency"],
+        "price": closes[-1],
+        "change_pct": pct_change(closes, 1),
+        "high_52w": meta.get("fiftyTwoWeekHigh"),
+        "low_52w": meta.get("fiftyTwoWeekLow"),
+        "is_taiwan": r["is_taiwan"],
+        "total": round(r["total"], 1),
+        "verdict": r["verdict"],
+        "ai": r["ai"],
+        "generated_at": r["generated_at"].isoformat(),
+        "chart": {
+            "dates": dates[-chart_days:],
+            "close": closes[-chart_days:],
+            "ma20": ma20[-chart_days:],
+            "ma60": ma60[-chart_days:],
+        },
+        "factors": factors,
+        "disclaimer": DISCLAIMER,
+    }
+
+
 def _bar(score: float) -> str:
     n = round(abs(score) * 5)
     return ("+" if score >= 0 else "-") * n or "0"
@@ -136,7 +202,7 @@ def format_report(r: dict) -> str:
     price = s["closes"][-1]
     day_chg = pct_change(s["closes"], 1)
     lines = [
-        f"📊 {s['name']} ({s['symbol']})",
+        f"📊 {s.get('zh') or s['name']} ({s['symbol']})",
         f"現價 {price:,.2f} {s['currency']}" + (f"（{day_chg:+.2f}%）" if day_chg is not None else ""),
     ]
     if meta.get("fiftyTwoWeekHigh"):

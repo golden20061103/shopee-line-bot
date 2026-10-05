@@ -32,7 +32,8 @@ def fetch_prices(symbol: str, range_: str = "1y", interval: str = "1d") -> dict 
         return None
     res = result[0]
     quote = res.get("indicators", {}).get("quote", [{}])[0]
-    pairs = [(c, v or 0) for c, v in zip(quote.get("close") or [], quote.get("volume") or []) if c is not None]
+    rows = zip(res.get("timestamp") or [], quote.get("close") or [], quote.get("volume") or [])
+    pairs = [(c, v or 0, t) for t, c, v in rows if c is not None]
     if not pairs:
         return None
     meta = res.get("meta", {})
@@ -42,6 +43,7 @@ def fetch_prices(symbol: str, range_: str = "1y", interval: str = "1d") -> dict 
         "currency": meta.get("currency", ""),
         "closes": [p[0] for p in pairs],
         "volumes": [p[1] for p in pairs],
+        "timestamps": [p[2] for p in pairs],
         "meta": meta,
     }
 

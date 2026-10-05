@@ -3,6 +3,7 @@
 ## 功能
 1. **蝦皮搜尋**：在 LINE 輸入商品關鍵字，回傳蝦皮搜尋連結。
 2. **股票分析**（`invest/`）：輸入「股票 2330」或「分析 AAPL」，系統會即時上網抓資料並評估買賣。
+3. **投資分析網頁**：部署後打開網站首頁，輸入代號即可看到評分儀表、股價均線圖、各因素拆解與新聞列表。
 
 ## 投資分析系統怎麼運作
 
@@ -36,6 +37,12 @@ pip install -r requirements.txt
 python -m invest 2330 0050 6488 AAPL NVDA
 python -m invest 2330 --no-ai     # 不呼叫 AI
 
+# 網頁：本機啟動後打開 http://localhost:5000
+python app.py
+
+# 產生離線快照頁（資料內嵌，不需伺服器）→ dist/snapshot.html
+python scripts/build_snapshot.py 2330 0050 NVDA
+
 # 測試
 python -m unittest discover tests
 ```
@@ -44,7 +51,10 @@ python -m unittest discover tests
 
 | 檔案 | 用途 |
 |---|---|
-| `app.py` | LINE Bot 主程式 |
+| `app.py` | LINE Bot 主程式 + 網頁（`/`）+ 分析 API（`/api/analyze?symbol=2330`） |
+| `web/index.html` | 投資分析網頁 |
+| `scripts/build_snapshot.py` | 產生內嵌資料的靜態快照頁 |
+| `invest/names.py` | 常見股票中文名稱（可自行增補） |
 | `invest/data.py` | 抓取股價（Yahoo Finance）與新聞（Google News RSS） |
 | `invest/indicators.py` | 技術指標：SMA、RSI、MACD |
 | `invest/sentiment.py` | 新聞標題情緒分析 |
