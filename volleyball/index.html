@@ -283,6 +283,13 @@ tfoot td { font-weight: 700; border-bottom: 0; }
 .ns-setter-g:focus { outline: none; }
 .ns-setter-g:focus-visible .ns-setter, .ns-setter-g:hover .ns-setter { fill: var(--court); }
 .ns-grab { fill: transparent; }
+.ns-hitter-g { cursor: grab; }
+.ns-hitter-g:active { cursor: grabbing; }
+.ns-hitter-g:focus { outline: none; }
+.ns-hitter-g:focus-visible .ns-hitter, .ns-hitter-g:focus-visible .ts-hitter, .ns-hitter-g:focus-visible .ts-runstart { stroke: var(--pick); stroke-width: .1; }
+.ns-hitter-g:hover .ts-hitter, .ns-hitter-g:hover .ns-hitter { stroke: var(--pick); }
+.ts-runstart { fill: var(--surface); stroke: var(--net); stroke-width: .06; stroke-dasharray: .1 .07; }
+.ts-runlbl { fill: var(--court-ink); font: 700 .36px var(--f-body); text-anchor: middle; paint-order: stroke; stroke: rgba(0,0,0,.35); stroke-width: .06; }
 .ns-handle { fill: transparent; stroke: var(--court); stroke-width: .04; stroke-dasharray: .07 .05; cursor: grab; }
 .ns-handle:focus { outline: none; }
 .ns-handle:focus-visible { stroke-width: .08; }
@@ -985,7 +992,7 @@ tfoot td { font-weight: 700; border-bottom: 0; }
 
   function fresh() {
     const a = PRESETS[0];
-    return { sel: 'A', p: pick(a), custom: [], setterX: 6, jump: 0, netH: 2.43, decoy: '', speed: 0.25 };
+    return { sel: 'A', p: pick(a), custom: [], setterX: 6, jump: 0, netH: 2.43, decoy: '', speed: 0.25, run: null };
   }
   function pick(s) { const o = {}; PARAMS.forEach(k => { o[k] = s[k]; }); return o; }
   let st = (function () {
@@ -1024,12 +1031,14 @@ tfoot td { font-weight: 700; border-bottom: 0; }
   }
 
   // 助跑路線（俯視：x 沿網，y 離網距離）
-  function approach(p, f, slide) {
+  // run＝自訂助跑起點（拖曳設定），沒有就自動決定
+  function approach(p, f, slide, run) {
     const hit = { x: f.x1, y: p.depth };
-    if (slide) return [{ x: st.setterX - 1.6, y: 3.2 }, { x: st.setterX - 0.3, y: 1.3 }, hit];
+    if (slide) return [run || { x: st.setterX - 1.6, y: 3.2 }, { x: st.setterX - 0.3, y: 1.3 }, hit];
     const sx = f.x1 < 1.5 ? -0.6 : f.x1 > 7.5 ? 9.6 : f.x1 + (p.off < 0 ? -0.3 : 0.3);
-    return [{ x: sx, y: Math.min(p.depth + 3.2, 9.3) }, hit];
+    return [run || { x: sx, y: Math.min(p.depth + 3.2, 9.3) }, hit];
   }
+  const mainRun = () => st.run || (sigOf(st.sel) || {}).run || null;
   function along(path, k) {
     const segs = [];
     let total = 0;
@@ -1062,7 +1071,7 @@ tfoot td { font-weight: 700; border-bottom: 0; }
 
   function modified() {
     const s = sigOf(st.sel);
-    return !s || PARAMS.some(k => k === 'att' ? s[k] !== st.p[k] : Math.abs(s[k] - st.p[k]) > 1e-6);
+    return !s || !!st.run || PARAMS.some(k => k === 'att' ? s[k] !== st.p[k] : Math.abs(s[k] - st.p[k]) > 1e-6);
   }
 
   let anim = null; // { t } 動畫中的時間（秒，0＝舉球員觸球）
@@ -1119,11 +1128,11 @@ tfoot td { font-weight: 700; border-bottom: 0; }
   function hitterState(f, path, t) {
     // 起跳前 0.35 秒離地，助跑 0.9 秒
     const tJump = f.T - 0.35, tRun = tJump - 0.9;
-    if (t == null) return { pos: path[path.length - 1], h: f.h1 - 0.25, air: true };
+    if (t == null) return { pos: path[path.length - 1], h: f.h1 - 0.6, air: true };
     if (t < tRun) return { pos: path[0], h: 1.6, air: false };
     if (t < tJump) return { pos: along(path, (t - tRun) / 0.9), h: 1.6, air: false };
     const k = clamp((t - tJump) / 0.35, 0, 1);
-    const top = f.h1 - 0.25;
+    const top = f.h1 - 0.6;
     const up = Math.sin(Math.min(k, 1) * Math.PI / 2);
     const fall = t > f.T ? clamp((t - f.T) / 0.4, 0, 1) : 0;
     return { pos: path[path.length - 1], h: 1.6 + (top - 1.6) * up - (top - 1.6) * fall * fall, air: true };
@@ -1181,11 +1190,13 @@ tfoot td { font-weight: 700; border-bottom: 0; }
     const drawHitter = (ff, pp, path, cls, label) => {
       const hs = hitterState(ff, path, t);
       const hx = hs.pos.x;
-      svg.appendChild(el('circle', { class: 'ns-hitter ' + cls, cx: hx, cy: sy(hs.h), r: 0.24 }));
-      svg.appendChild(el('text', { class: 'ns-hitter-no', x: hx, y: sy(hs.h) }, label));
+      const g = cls || t != null ? svg : svg.appendChild(el('g', { class: 'ns-hitter-g', 'data-h': 'hitter', tabindex: 0, role: 'slider', 'aria-label': '攻擊手：左右拖曳改變攻擊位置' }));
+      if (g !== svg) g.appendChild(el('circle', { class: 'ns-grab', cx: hx, cy: sy(hs.h), r: 0.45 }));
+      g.appendChild(el('circle', { class: 'ns-hitter ' + cls, cx: hx, cy: sy(hs.h), r: 0.24 }));
+      g.appendChild(el('text', { class: 'ns-hitter-no', x: hx, y: sy(hs.h) }, label));
     };
-    if (fd) drawHitter(fd, decoy, approach(decoy, fd, decoy.slide), 'decoy', '誘');
-    drawHitter(f, p, approach(p, f, s.slide), '', playerNo(p.att) || '攻');
+    if (fd) drawHitter(fd, decoy, approach(decoy, fd, decoy.slide, decoy.run), 'decoy', '誘');
+    drawHitter(f, p, approach(p, f, s.slide, mainRun()), '', playerNo(p.att) || '攻');
 
     // 球
     const bt = t == null ? f.T : clamp(t, 0, f.T + 0.25);
@@ -1214,20 +1225,30 @@ tfoot td { font-weight: 700; border-bottom: 0; }
     svg.appendChild(el('text', { class: 'ts-lbl', x: 4.5, y: 3.6 }, '3 公尺線'));
     const t = anim ? anim.t : null;
     const decoy = st.decoy && sigOf(st.decoy);
-    const drawRun = (ff, pp, slide, cls, label) => {
-      const path = approach(pp, ff, slide);
+    const drawRun = (ff, pp, slide, run, cls, label) => {
+      const path = approach(pp, ff, slide, run);
       svg.appendChild(el('polyline', { class: 'ts-run ' + cls, points: path.map(q => q.x.toFixed(2) + ',' + q.y.toFixed(2)).join(' ') }));
+      const live = !cls && t == null;
+      if (live) {
+        // 助跑起點把手
+        const rg = svg.appendChild(el('g', { class: 'ns-hitter-g', 'data-h': 'run', tabindex: 0, role: 'slider', 'aria-label': '助跑起點：拖曳或用方向鍵移動' }));
+        rg.appendChild(el('circle', { class: 'ns-grab', cx: path[0].x, cy: path[0].y, r: 0.6 }));
+        rg.appendChild(el('circle', { class: 'ts-runstart', cx: path[0].x, cy: path[0].y, r: 0.28 }));
+        rg.appendChild(el('text', { class: 'ts-runlbl', x: path[0].x, y: path[0].y + 0.75 }, '助跑起點'));
+      }
       const hs = hitterState(ff, path, t);
-      svg.appendChild(el('circle', { class: 'ts-hitter ' + cls, cx: hs.pos.x, cy: hs.pos.y, r: 0.42 }));
-      svg.appendChild(el('text', { class: 'ns-hitter-no', x: hs.pos.x, y: hs.pos.y, style: 'font-size:.42px;fill:' + (cls ? '#fff' : 'var(--ink)') }, label));
+      const g = live ? svg.appendChild(el('g', { class: 'ns-hitter-g', 'data-h': 'hitter', tabindex: 0, role: 'slider', 'aria-label': '攻擊手起跳點：拖曳或用方向鍵移動' })) : svg;
+      if (live) g.appendChild(el('circle', { class: 'ns-grab', cx: hs.pos.x, cy: hs.pos.y, r: 0.55 }));
+      g.appendChild(el('circle', { class: 'ts-hitter ' + cls, cx: hs.pos.x, cy: hs.pos.y, r: 0.42 }));
+      g.appendChild(el('text', { class: 'ns-hitter-no', x: hs.pos.x, y: hs.pos.y, style: 'font-size:.42px;fill:' + (cls ? '#fff' : 'var(--ink)') }, label));
     };
-    if (decoy) { const fd = flight(decoy); drawRun(fd, decoy, decoy.slide, 'decoy', '誘'); }
+    if (decoy) { const fd = flight(decoy); drawRun(fd, decoy, decoy.slide, decoy.run, 'decoy', '誘'); }
     const setterY = 0.7;
     svg.appendChild(el('line', { class: 'ts-set', x1: st.setterX, y1: setterY, x2: f.x1, y2: p.depth }));
     svg.appendChild(el('circle', { class: 'ts-dot', cx: f.x1, cy: p.depth, r: 0.2 }));
-    drawRun(f, p, s.slide, '', playerNo(p.att) || '攻');
+    drawRun(f, p, s.slide, mainRun(), '', playerNo(p.att) || '攻');
     const tg = el('g', { class: 'ns-setter-g', 'data-h': 'setter', tabindex: 0, role: 'slider', 'aria-label': '舉球員位置：左右拖曳或用方向鍵移動' });
-    tg.appendChild(el('circle', { class: 'ns-grab', cx: st.setterX, cy: setterY, r: 0.75 }));
+    tg.appendChild(el('circle', { class: 'ns-grab', cx: st.setterX, cy: setterY, r: 0.55 }));
     tg.appendChild(el('circle', { class: 'ts-setter', cx: st.setterX, cy: setterY, r: 0.42 }));
     tg.appendChild(el('text', { class: 'ns-hitter-no', x: st.setterX, y: setterY, style: 'font-size:.4px' }, '舉'));
     svg.appendChild(tg);
@@ -1266,6 +1287,11 @@ tfoot td { font-weight: 700; border-bottom: 0; }
     st.setterX = Math.round(clamp(x, 0.3, 8.7) * 10) / 10;
     st.p.off = Math.round(clamp(hitX - st.setterX, -9, 9) * 10) / 10;
   }
+  function applyHitter(x, y) {
+    st.p.off = Math.round(clamp(x - st.setterX, -9, 9) * 10) / 10;
+    if (y != null) st.p.depth = Math.round(clamp(y, 0.3, 5) * 10) / 10;
+  }
+  function applyRun(x, y) { st.run = { x: Math.round(clamp(x, -1, 10) * 10) / 10, y: Math.round(clamp(y, 0.3, 9.5) * 10) / 10 }; }
   function applyHit(x, h) {
     st.p.off = Math.round(clamp(x - st.setterX, -9, 9) * 10) / 10;
     st.p.balls = Math.round(clamp((h - st.netH) / BALL, 0.5, 12) * 4) / 4;
@@ -1289,6 +1315,8 @@ tfoot td { font-weight: 700; border-bottom: 0; }
       if (!drag) return;
       const q = pt(svg, e);
       if (drag === 'setter') applySetter(q.x);
+      else if (drag === 'hitter') applyHitter(q.x, id === 'sp-top' ? q.y : null);
+      else if (drag === 'run') applyRun(q.x, q.y);
       else if (drag === 'hit') applyHit(q.x, FLOOR - q.y); else applyApex(FLOOR - q.y);
       render();
     });
@@ -1303,6 +1331,8 @@ tfoot td { font-weight: 700; border-bottom: 0; }
       if (!mv) return;
       e.preventDefault();
       if (hnd.dataset.h === 'setter') { if (!mv[0]) return; applySetter(st.setterX + mv[0]); }
+      else if (hnd.dataset.h === 'hitter') { if (id === 'sp-net' && !mv[0]) return; applyHitter(f.x1 + mv[0], id === 'sp-top' ? st.p.depth - mv[1] * 0.1 : null); }
+      else if (hnd.dataset.h === 'run') { const r0 = approach(st.p, f, (sigOf(st.sel) || {}).slide, mainRun())[0]; applyRun(r0.x + mv[0], r0.y - mv[1] * 0.1); }
       else if (hnd.dataset.h === 'hit') applyHit(f.x1 + mv[0], f.h1 + mv[1] * BALL / 4);
       else applyApex(f.H + mv[1] * 0.05);
       save(); render();
@@ -1314,7 +1344,7 @@ tfoot td { font-weight: 700; border-bottom: 0; }
       const b = e.target.closest('[data-sig]');
       if (!b) return;
       const s = sigOf(b.dataset.sig);
-      st.sel = s.k; st.p = pick(s);
+      st.sel = s.k; st.p = pick(s); st.run = null;
       if (st.decoy === s.k) st.decoy = '';
       save(); render();
     });
@@ -1327,17 +1357,17 @@ tfoot td { font-weight: 700; border-bottom: 0; }
     $('sp-netH').addEventListener('change', e => { st.netH = Number(e.target.value); save(); render(); });
     $('sp-speed').addEventListener('change', e => { st.speed = Number(e.target.value); save(); });
     $('sp-play').addEventListener('click', play);
-    $('sp-reset').addEventListener('click', () => { const s = sigOf(st.sel); if (s) { st.p = pick(s); st.setterX = 6; save(); render(); } });
+    $('sp-reset').addEventListener('click', () => { const s = sigOf(st.sel); if (s) { st.p = pick(s); st.setterX = 6; st.run = null; save(); render(); } });
     $('sp-save').addEventListener('click', () => {
       const k = $('sp-new-k').value.trim();
       const name = $('sp-new-name').value.trim() || k;
       const msg = $('sp-save-msg');
       if (!k) { msg.textContent = '請先輸入暗號代號，例如 X1。'; $('sp-new-k').focus(); return; }
       if (PRESETS.some(s => s.k === k)) { msg.textContent = '「' + k + '」是內建暗號，請換一個代號。'; return; }
-      const sig = { k, name, alias: name, ...pick(st.p), slide: !!(sigOf(st.sel) || {}).slide, mine: true };
+      const sig = { k, name, alias: name, ...pick(st.p), slide: !!(sigOf(st.sel) || {}).slide, run: mainRun(), mine: true };
       const i = st.custom.findIndex(s => s.k === k);
       if (i >= 0) st.custom[i] = sig; else st.custom.push(sig);
-      st.sel = k;
+      st.sel = k; st.run = null;
       $('sp-new-k').value = ''; $('sp-new-name').value = '';
       msg.textContent = '已儲存暗號「' + k + '」。';
       save(); render();
@@ -1346,7 +1376,7 @@ tfoot td { font-weight: 700; border-bottom: 0; }
       const k = st.sel;
       st.custom = st.custom.filter(s => s.k !== k);
       if (st.decoy === k) st.decoy = '';
-      st.sel = 'A'; st.p = pick(PRESETS[0]);
+      st.sel = 'A'; st.p = pick(PRESETS[0]); st.run = null;
       $('sp-save-msg').textContent = '已刪除暗號「' + k + '」。';
       save(); render();
     });
