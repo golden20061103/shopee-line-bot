@@ -1,4 +1,5 @@
 import os
+import re
 import urllib.parse
 from flask import Flask, request, abort
 from linebot import LineBotApi, WebhookHandler
@@ -7,6 +8,7 @@ from linebot.models import (
     MessageEvent, TextMessage, TextSendMessage,
     FollowEvent
 )
+from invest import analyze, format_report
 
 app = Flask(__name__)
 
@@ -25,8 +27,20 @@ WELCOME_MSG = (
     "   例如：無線耳機、氣炸鍋、運動鞋\n"
     "2️⃣ 我會回傳蝦皮搜尋連結\n"
     "3️⃣ 點連結 → 挑選商品 → 正常結帳\n\n"
-    "✅ 透過我的連結購買，你「不會多付任何費用」！"
+    "✅ 透過我的連結購買，你「不會多付任何費用」！\n\n"
+    "📈 股票分析：輸入「股票 2330」或「分析 AAPL」，\n"
+    "我會抓最新股價、新聞、總經與政治消息，評估目前該買還是賣。"
 )
+
+STOCK_CMD = re.compile(r"^(?:股票|分析|stock)\s*([A-Za-z0-9.^=\-]+)$", re.IGNORECASE)
+
+def build_stock_reply(symbol: str) -> str:
+    # LINE 回覆 token 約 1 分鐘失效，預設不呼叫 AI 以確保及時回覆；設 LINE_STOCK_AI=1 可開啟
+    use_ai = os.environ.get("LINE_STOCK_AI") == "1"
+    result = analyze(symbol, use_ai=use_ai)
+    if not result:
+        return f"❌ 找不到股票代號：{symbol}\n台股請輸入數字代號（如 2330），美股請輸入英文代號（如 AAPL）。"
+    return format_report(result)[:4900]  # LINE 單則訊息上限 5000 字
 
 QUICK_KEYWORDS = {
     "3C 電子": "3C 電子",
@@ -80,7 +94,8 @@ def handle_message(event):
             TextSendMessage(text=WELCOME_MSG)
         )
         return
-    reply_text = build_reply(keyword)
+    stock_match = STOCK_CMD.match(keyword)
+    reply_text = build_stock_reply(stock_match.group(1)) if stock_match else build_reply(keyword)
     line_bot_api.reply_message(
         event.reply_token,
         TextSendMessage(text=reply_text)
