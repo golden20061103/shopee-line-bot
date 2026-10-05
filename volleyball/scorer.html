@@ -277,6 +277,11 @@ tfoot td { font-weight: 700; border-bottom: 0; }
 .ns-stack { fill: none; stroke: var(--amber); stroke-width: .018; }
 .ns-hgt { fill: var(--amber); font: 700 .24px var(--f-body); }
 .ns-ball { fill: #F6D33C; stroke: #2C5E9E; stroke-width: .03; }
+.ns-setter-g { cursor: grab; }
+.ns-setter-g:active { cursor: grabbing; }
+.ns-setter-g:focus { outline: none; }
+.ns-setter-g:focus-visible .ns-setter, .ns-setter-g:hover .ns-setter { fill: var(--court); }
+.ns-grab { fill: transparent; }
 .ns-handle { fill: transparent; stroke: var(--court); stroke-width: .04; stroke-dasharray: .07 .05; cursor: grab; }
 .ns-handle:focus { outline: none; }
 .ns-handle:focus-visible { stroke-width: .08; }
@@ -469,7 +474,7 @@ tfoot td { font-weight: 700; border-bottom: 0; }
         <section class="panel">
           <div class="panel-head"><h2>調整配球</h2><button class="btn" type="button" id="sp-reset" style="padding:4px 10px;font-size:.8rem">還原暗號預設</button></div>
           <div class="slider"><div class="top"><label for="sp-off">攻擊位置（距舉球員）</label><output id="sp-off-o"></output></div>
-            <input type="range" id="sp-off" min="-6" max="3.5" step="0.1"><div class="hint"><span>← 前方（4 號位）</span><span>背後（2 號位）→</span></div></div>
+            <input type="range" id="sp-off" min="-9" max="9" step="0.1"><div class="hint"><span>← 前方（4 號位）</span><span>背後（2 號位）→</span></div></div>
           <div class="slider"><div class="top"><label for="sp-balls">擊球高度（網上幾顆球）</label><output id="sp-balls-o"></output></div>
             <input type="range" id="sp-balls" min="0.5" max="12" step="0.25"><div class="hint"><span>低平</span><span>高球</span></div></div>
           <div class="slider"><div class="top"><label for="sp-apex">弧度（最高點比擊球點高）</label><output id="sp-apex-o"></output></div>
@@ -477,7 +482,7 @@ tfoot td { font-weight: 700; border-bottom: 0; }
           <div class="slider"><div class="top"><label for="sp-depth">起跳離網距離</label><output id="sp-depth-o"></output></div>
             <input type="range" id="sp-depth" min="0.3" max="5" step="0.1"><div class="hint"><span>貼網</span><span>3 公尺線後＝後排攻擊</span></div></div>
           <div class="slider"><div class="top"><label for="sp-setx">舉球員位置（離左邊線）</label><output id="sp-setx-o"></output></div>
-            <input type="range" id="sp-setx" min="2" max="8.5" step="0.1"><div class="hint"><span>一傳不到位</span><span>標準到位 6m</span></div></div>
+            <input type="range" id="sp-setx" min="0.3" max="8.7" step="0.1"><div class="hint"><span>一傳不到位</span><span>標準到位 6m</span></div></div>
           <div class="fields">
             <label class="field">攻擊手<select id="sp-att"></select></label>
             <label class="field">誘攻（掩護）<select id="sp-decoy"></select></label>
@@ -1147,8 +1152,11 @@ tfoot td { font-weight: 700; border-bottom: 0; }
     [[1.5, '4 號位'], [4.5, '3 號位'], [7.5, '2 號位']].forEach(([x, t]) => svg.appendChild(el('text', { class: 'ns-pos', x, y: sy(0) + 0.65 }, t)));
     // 舉球員（三角形）
     const sx = st.setterX;
-    svg.appendChild(el('polygon', { class: 'ns-setter', points: [sx - 0.32 + ',' + sy(0), sx + 0.32 + ',' + sy(0), sx + ',' + sy(0.62)].join(' ') }));
-    svg.appendChild(el('text', { class: 'ns-setter-lbl', x: sx, y: sy(0) + 0.32 }, '舉球員'));
+    const sg = el('g', { class: 'ns-setter-g', 'data-h': 'setter', tabindex: 0, role: 'slider', 'aria-label': '舉球員位置：左右拖曳或用方向鍵移動', 'aria-valuetext': fmt(sx) + ' 公尺' });
+    sg.appendChild(el('rect', { class: 'ns-grab', x: sx - 0.55, y: sy(0.95), width: 1.1, height: 1.35 }));
+    sg.appendChild(el('polygon', { class: 'ns-setter', points: [sx - 0.32 + ',' + sy(0), sx + 0.32 + ',' + sy(0), sx + ',' + sy(0.62)].join(' ') }));
+    sg.appendChild(el('text', { class: 'ns-setter-lbl', x: sx, y: sy(0) + 0.32 }, '舉球員 ⇆'));
+    svg.appendChild(sg);
 
     // 網上幾顆球
     const n = Math.ceil(p.balls - 1e-6);
@@ -1217,8 +1225,11 @@ tfoot td { font-weight: 700; border-bottom: 0; }
     svg.appendChild(el('line', { class: 'ts-set', x1: st.setterX, y1: setterY, x2: f.x1, y2: p.depth }));
     svg.appendChild(el('circle', { class: 'ts-dot', cx: f.x1, cy: p.depth, r: 0.2 }));
     drawRun(f, p, s.slide, '', playerNo(p.att) || '攻');
-    svg.appendChild(el('circle', { class: 'ts-setter', cx: st.setterX, cy: setterY, r: 0.42 }));
-    svg.appendChild(el('text', { class: 'ns-hitter-no', x: st.setterX, y: setterY, style: 'font-size:.4px' }, '舉'));
+    const tg = el('g', { class: 'ns-setter-g', 'data-h': 'setter', tabindex: 0, role: 'slider', 'aria-label': '舉球員位置：左右拖曳或用方向鍵移動' });
+    tg.appendChild(el('circle', { class: 'ns-grab', cx: st.setterX, cy: setterY, r: 0.75 }));
+    tg.appendChild(el('circle', { class: 'ts-setter', cx: st.setterX, cy: setterY, r: 0.42 }));
+    tg.appendChild(el('text', { class: 'ns-hitter-no', x: st.setterX, y: setterY, style: 'font-size:.4px' }, '舉'));
+    svg.appendChild(tg);
   }
 
   function play() {
@@ -1248,8 +1259,14 @@ tfoot td { font-weight: 700; border-bottom: 0; }
     const q = svg.createSVGPoint(); q.x = e.clientX; q.y = e.clientY;
     const m = svg.getScreenCTM(); return m ? q.matrixTransform(m.inverse()) : { x: 0, y: 0 };
   }
+  // 移動舉球員時，攻擊手的擊球點留在原地，只改變舉球距離
+  function applySetter(x) {
+    const hitX = clamp(st.setterX + st.p.off, -0.5, 9.5);
+    st.setterX = Math.round(clamp(x, 0.3, 8.7) * 10) / 10;
+    st.p.off = Math.round(clamp(hitX - st.setterX, -9, 9) * 10) / 10;
+  }
   function applyHit(x, h) {
-    st.p.off = Math.round(clamp(x - st.setterX, -6, 3.5) * 10) / 10;
+    st.p.off = Math.round(clamp(x - st.setterX, -9, 9) * 10) / 10;
     st.p.balls = Math.round(clamp((h - st.netH) / BALL, 0.5, 12) * 4) / 4;
   }
   function applyApex(h) {
@@ -1258,7 +1275,8 @@ tfoot td { font-weight: 700; border-bottom: 0; }
   }
 
   function bind() {
-    const svg = $('sp-net');
+    ['sp-net', 'sp-top'].forEach(id => {
+    const svg = $(id);
     svg.addEventListener('pointerdown', e => {
       const hnd = e.target.closest('[data-h]');
       if (!hnd || anim) return;
@@ -1269,7 +1287,8 @@ tfoot td { font-weight: 700; border-bottom: 0; }
     svg.addEventListener('pointermove', e => {
       if (!drag) return;
       const q = pt(svg, e);
-      if (drag === 'hit') applyHit(q.x, FLOOR - q.y); else applyApex(FLOOR - q.y);
+      if (drag === 'setter') applySetter(q.x);
+      else if (drag === 'hit') applyHit(q.x, FLOOR - q.y); else applyApex(FLOOR - q.y);
       render();
     });
     const end = () => { if (drag) { drag = null; save(); render(); } };
@@ -1282,10 +1301,12 @@ tfoot td { font-weight: 700; border-bottom: 0; }
       const mv = { ArrowLeft: [-0.1, 0], ArrowRight: [0.1, 0], ArrowUp: [0, 1], ArrowDown: [0, -1] }[e.key];
       if (!mv) return;
       e.preventDefault();
-      if (hnd.dataset.h === 'hit') applyHit(f.x1 + mv[0], f.h1 + mv[1] * BALL / 4);
+      if (hnd.dataset.h === 'setter') { if (!mv[0]) return; applySetter(st.setterX + mv[0]); }
+      else if (hnd.dataset.h === 'hit') applyHit(f.x1 + mv[0], f.h1 + mv[1] * BALL / 4);
       else applyApex(f.H + mv[1] * 0.05);
       save(); render();
       const again = svg.querySelector('[data-h="' + hnd.dataset.h + '"]'); if (again) again.focus();
+    });
     });
 
     $('sp-sigs').addEventListener('click', e => {
@@ -1298,7 +1319,7 @@ tfoot td { font-weight: 700; border-bottom: 0; }
     });
     const num = (id, key) => $(id).addEventListener('input', e => { st.p[key] = Number(e.target.value); save(); render(); });
     num('sp-off', 'off'); num('sp-balls', 'balls'); num('sp-apex', 'apex'); num('sp-depth', 'depth');
-    $('sp-setx').addEventListener('input', e => { st.setterX = Number(e.target.value); save(); render(); });
+    $('sp-setx').addEventListener('input', e => { applySetter(Number(e.target.value)); save(); render(); });
     $('sp-att').addEventListener('change', e => { st.p.att = e.target.value; save(); render(); });
     $('sp-decoy').addEventListener('change', e => { st.decoy = e.target.value; save(); render(); });
     $('sp-jump').addEventListener('change', e => { st.jump = Number(e.target.value); save(); render(); });
