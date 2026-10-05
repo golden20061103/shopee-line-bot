@@ -245,12 +245,86 @@ tfoot td { font-weight: 700; border-bottom: 0; }
 .sim-result strong { font-weight: 700; }
 .legend { display: flex; flex-wrap: wrap; gap: 6px 12px; font-size: .78rem; color: var(--muted); }
 .legend i { display: inline-block; width: 18px; height: 3px; border-radius: 2px; vertical-align: middle; margin-right: 4px; }
+
+/* Set play designer */
+.setp { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: 18px; align-items: start; }
+@media (max-width: 860px) { .setp { grid-template-columns: 1fr; } }
+.setp-main, .setp-side { display: grid; gap: 14px; min-width: 0; }
+.sigs { display: flex; flex-wrap: wrap; gap: 6px; }
+.sig { border: 1px solid var(--line); background: var(--surface); border-radius: 999px; padding: 5px 12px; font-size: .86rem; font-weight: 700; display: inline-flex; gap: 6px; align-items: center; }
+.sig small { font-weight: 400; color: var(--muted); font-size: .74rem; }
+.sig[aria-pressed="true"] { background: var(--net); color: #F4F6FA; border-color: var(--net); }
+.sig[aria-pressed="true"] small { color: #AFC0DA; }
+.sig.mine { border-style: dashed; }
+.net-card { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 14px 14px 10px; display: grid; gap: 10px; }
+.net-title { display: flex; align-items: center; gap: 12px; }
+.net-title .badge { width: 46px; height: 46px; border-radius: 8px 0 8px 0; background: var(--zone); color: #fff; display: grid; place-content: center; font: 800 1.6rem var(--f-display); flex: none; }
+.net-title h2 { font-size: 1.7rem; color: var(--zone); }
+.net-title .mod { font-size: .75rem; color: var(--amber); border: 1px solid var(--amber); border-radius: 999px; padding: 0 8px; }
+.net-card svg { display: block; width: 100%; height: auto; touch-action: none; user-select: none; -webkit-user-select: none; }
+.ns-floor { stroke: var(--muted); stroke-width: .03; }
+.ns-post { stroke: var(--zone); stroke-width: .07; stroke-linecap: round; }
+.ns-mesh { stroke: var(--zone); stroke-width: .012; opacity: .7; }
+.ns-tape { stroke: var(--zone); stroke-width: .06; }
+.ns-ant { stroke: var(--lose); stroke-width: .05; stroke-dasharray: .1 .1; }
+.ns-pos { fill: var(--muted); font: 600 .26px var(--f-body); text-anchor: middle; }
+.ns-tick { fill: var(--muted); font: 600 .22px var(--f-display); text-anchor: end; dominant-baseline: central; }
+.ns-tickline { stroke: var(--line); stroke-width: .01; }
+.ns-setter { fill: var(--zone); }
+.ns-setter-lbl { fill: var(--ink); font: 700 .26px var(--f-body); text-anchor: middle; }
+.ns-path { fill: none; stroke: var(--muted); stroke-width: .04; stroke-dasharray: .1 .07; }
+.ns-path.decoy { stroke: var(--them-ring); stroke-dasharray: .05 .1; }
+.ns-stack { fill: none; stroke: var(--amber); stroke-width: .018; }
+.ns-hgt { fill: var(--amber); font: 700 .24px var(--f-body); }
+.ns-ball { fill: #F6D33C; stroke: #2C5E9E; stroke-width: .03; }
+.ns-handle { fill: transparent; stroke: var(--court); stroke-width: .04; stroke-dasharray: .07 .05; cursor: grab; }
+.ns-handle:focus { outline: none; }
+.ns-handle:focus-visible { stroke-width: .08; }
+.ns-apex { fill: var(--court); }
+.ns-apex-lbl { fill: var(--court); font: 700 .22px var(--f-body); text-anchor: middle; }
+.ns-hitter { fill: var(--court); stroke: var(--surface); stroke-width: .03; }
+.ns-hitter.decoy { fill: var(--them-disc); stroke: var(--them-ring); }
+.ns-hitter-no { fill: #fff; font: 800 .22px var(--f-display); text-anchor: middle; dominant-baseline: central; }
+.ns-clock { fill: var(--muted); font: 700 .26px var(--f-display); }
+.net-desc { text-align: center; display: grid; gap: 2px; font-size: 1.02rem; font-weight: 700; padding-bottom: 4px; }
+.net-desc .alias { color: var(--zone); font-size: 1.15rem; }
+.net-desc em { font-style: normal; color: var(--lose); }
+.net-desc b { color: var(--amber); }
+.setp-top { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 12px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 12px; align-items: center; }
+@media (max-width: 520px) { .setp-top { grid-template-columns: 1fr; } }
+.setp-top svg { display: block; width: 100%; max-width: 260px; height: auto; justify-self: center; }
+.ts-court { fill: var(--court); }
+.ts-line { stroke: var(--court-ink); stroke-width: .06; fill: none; }
+.ts-net { stroke: var(--net); stroke-width: .16; }
+.ts-run { stroke: var(--net); stroke-width: .06; stroke-dasharray: .2 .12; fill: none; }
+.ts-run.decoy { stroke: var(--them-ring); }
+.ts-set { stroke: #F6D33C; stroke-width: .08; fill: none; }
+.ts-dot { fill: #F6D33C; stroke: var(--net); stroke-width: .05; }
+.ts-setter { fill: var(--zone); stroke: var(--court-ink); stroke-width: .06; }
+.ts-hitter { fill: var(--surface); stroke: var(--net); stroke-width: .06; }
+.ts-hitter.decoy { fill: var(--them-disc); stroke: var(--them-ring); }
+.ts-lbl { fill: var(--court-ink); font: 700 .5px var(--f-body); text-anchor: middle; }
+.stats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px 12px; }
+.stat { display: grid; gap: 0; }
+.stat .v { font: 800 1.35rem/1.15 var(--f-display); font-variant-numeric: tabular-nums; }
+.stat .k { font-size: .74rem; color: var(--muted); }
+.tempo { font-size: .85rem; grid-column: 1 / -1; padding: 6px 10px; border-radius: 8px; background: var(--bg); }
+.slider { display: grid; gap: 2px; }
+.slider .top { display: flex; justify-content: space-between; gap: 8px; font-size: .86rem; }
+.slider .top output { font-weight: 700; font-variant-numeric: tabular-nums; color: var(--court); }
+.slider input[type=range] { width: 100%; accent-color: var(--court); }
+.slider .hint { font-size: .72rem; color: var(--muted); display: flex; justify-content: space-between; }
+.field { display: grid; gap: 4px; font-size: .82rem; color: var(--muted); }
+.field select, .field input[type=text] { border: 1px solid var(--line); background: var(--bg); color: var(--ink); border-radius: 8px; padding: 7px 10px; font: inherit; font-size: .9rem; width: 100%; }
+.fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+@media (max-width: 420px) { .fields { grid-template-columns: 1fr; } }
 </style>
 
 <div class="wrap">
   <nav class="tabs" role="tablist" aria-label="功能">
     <button type="button" role="tab" data-view="score" aria-selected="true">計分</button>
     <button type="button" role="tab" data-view="sim" aria-selected="false">模擬對戰</button>
+    <button type="button" role="tab" data-view="set" aria-selected="false">模擬配球</button>
   </nav>
   <div class="view" id="view-score">
   <section class="board" aria-label="比分">
@@ -364,6 +438,64 @@ tfoot td { font-weight: 700; border-bottom: 0; }
           </div>
           <div class="sim-result" id="sim-result" aria-live="polite">按「模擬一球」，球會依球路機率飛出，並判定得失分。</div>
           <div class="breakdown" id="sim-tally"></div>
+        </section>
+      </div>
+    </div>
+  </div>
+  <div class="view" id="view-set" hidden>
+    <section class="panel">
+      <div class="panel-head"><h2>暗號表</h2><span class="label">點選暗號載入配球</span></div>
+      <div class="sigs" id="sp-sigs" role="group" aria-label="暗號"></div>
+    </section>
+    <div class="setp">
+      <div class="setp-main">
+        <div class="net-card">
+          <div class="net-title"><span class="badge" id="sp-badge">A</span><h2 id="sp-title">戰術：A</h2><span class="mod" id="sp-mod" hidden>已調整</span></div>
+          <svg id="sp-net" viewBox="-1.35 -0.25 11.7 7.65" role="img" aria-label="側面球網圖：舉球弧線與擊球點，可拖曳擊球點和最高點"></svg>
+          <div class="net-desc" id="sp-desc"></div>
+        </div>
+        <div class="setp-top">
+          <svg id="sp-top" viewBox="-1 -0.9 11 10.6" role="img" aria-label="俯視圖：舉球員、攻擊手助跑路線與擊球點"></svg>
+          <div class="stats" id="sp-stats"></div>
+        </div>
+        <div class="ctl-row">
+          <button class="btn" type="button" id="sp-play">▶ 播放這一球</button>
+          <label class="field" style="grid-auto-flow:column;align-items:center;gap:6px">速度
+            <select id="sp-speed"><option value="1">實際速度</option><option value="0.5">½ 慢動作</option><option value="0.25" selected>¼ 慢動作</option></select>
+          </label>
+        </div>
+      </div>
+      <div class="setp-side">
+        <section class="panel">
+          <div class="panel-head"><h2>調整配球</h2><button class="btn" type="button" id="sp-reset" style="padding:4px 10px;font-size:.8rem">還原暗號預設</button></div>
+          <div class="slider"><div class="top"><label for="sp-off">攻擊位置（距舉球員）</label><output id="sp-off-o"></output></div>
+            <input type="range" id="sp-off" min="-6" max="3.5" step="0.1"><div class="hint"><span>← 前方（4 號位）</span><span>背後（2 號位）→</span></div></div>
+          <div class="slider"><div class="top"><label for="sp-balls">擊球高度（網上幾顆球）</label><output id="sp-balls-o"></output></div>
+            <input type="range" id="sp-balls" min="0.5" max="12" step="0.25"><div class="hint"><span>低平</span><span>高球</span></div></div>
+          <div class="slider"><div class="top"><label for="sp-apex">弧度（最高點比擊球點高）</label><output id="sp-apex-o"></output></div>
+            <input type="range" id="sp-apex" min="0" max="4" step="0.05"><div class="hint"><span>平快</span><span>高拋</span></div></div>
+          <div class="slider"><div class="top"><label for="sp-depth">起跳離網距離</label><output id="sp-depth-o"></output></div>
+            <input type="range" id="sp-depth" min="0.3" max="5" step="0.1"><div class="hint"><span>貼網</span><span>3 公尺線後＝後排攻擊</span></div></div>
+          <div class="slider"><div class="top"><label for="sp-setx">舉球員位置（離左邊線）</label><output id="sp-setx-o"></output></div>
+            <input type="range" id="sp-setx" min="2" max="8.5" step="0.1"><div class="hint"><span>一傳不到位</span><span>標準到位 6m</span></div></div>
+          <div class="fields">
+            <label class="field">攻擊手<select id="sp-att"></select></label>
+            <label class="field">誘攻（掩護）<select id="sp-decoy"></select></label>
+            <label class="field">舉球方式<select id="sp-jump"><option value="0">站舉（出手 2.5m）</option><option value="1">跳舉（出手 3.0m）</option></select></label>
+            <label class="field">網高<select id="sp-netH"><option value="2.43">男子 2.43m</option><option value="2.24">女子 2.24m</option></select></label>
+          </div>
+        </section>
+        <section class="panel">
+          <div class="panel-head"><h2>存成我的暗號</h2></div>
+          <div class="fields">
+            <label class="field">暗號代號<input type="text" id="sp-new-k" maxlength="6" placeholder="例如：X1"></label>
+            <label class="field">名稱 / 俗稱<input type="text" id="sp-new-name" maxlength="16" placeholder="例如：交叉快攻"></label>
+          </div>
+          <div class="ctl-row">
+            <button class="btn" type="button" id="sp-save">儲存目前配球</button>
+            <button class="btn danger" type="button" id="sp-del" hidden>刪除這個暗號</button>
+          </div>
+          <p class="empty" id="sp-save-msg" style="padding:0">調整好滑桿後，取一個代號存起來，之後會出現在暗號表。</p>
         </section>
       </div>
     </div>
@@ -802,6 +934,404 @@ tfoot td { font-weight: 700; border-bottom: 0; }
 
   window.vbScorer = { players: () => state.players, teams: () => state.teams };
   render();
+})();
+</script>
+<script>
+(function () {
+  const KEY = 'vb-set-v1';
+  const NS = 'http://www.w3.org/2000/svg';
+  const G = 9.8, BALL = 0.21, STEP = 0.7, FLOOR = 6.6;
+
+  // 暗號預設：off＝擊球點距舉球員（負＝前方往 4 號位，正＝背後往 2 號位），balls＝網上幾顆球，apex＝最高點比擊球點高幾公尺，depth＝離網距離
+  const PRESETS = [
+    { k: 'A', name: 'A快', alias: '俗稱A或A快', off: -0.7, balls: 1.25, apex: 0.1, depth: 0.8, att: 'mb',
+      lines: ['位於舉球員<em>正前方一步左右</em>', '球的高度約<b>網上1~1.5顆球</b>'] },
+    { k: 'B', name: 'B快', alias: '俗稱B快、短平快', off: -2.2, balls: 1.5, apex: 0.12, depth: 0.8, att: 'mb',
+      lines: ['位於舉球員<em>前方兩三步</em>', '球低平快速，約<b>網上1~2顆球</b>'] },
+    { k: 'C', name: 'C快', alias: '俗稱C快、背快', off: 0.7, balls: 1.25, apex: 0.1, depth: 0.8, att: 'mb',
+      lines: ['位於舉球員<em>背後一步左右</em>', '球的高度約<b>網上1~1.5顆球</b>'] },
+    { k: 'D', name: 'D快', alias: '俗稱D快、背短平快', off: 2.2, balls: 1.5, apex: 0.12, depth: 0.8, att: 'mb',
+      lines: ['位於舉球員<em>背後兩三步</em>', '球低平往 2 號位推，約<b>網上1~2顆球</b>'] },
+    { k: '飛', name: '背飛', alias: '俗稱背飛、單腳', off: 2.6, balls: 2, apex: 0.2, depth: 0.6, att: 'mb', slide: true,
+      lines: ['攔中從舉球員<em>前方繞到背後</em>，單腳起跳沿網飛', '球的高度約<b>網上2顆球</b>'] },
+    { k: '差', name: '時間差', alias: '俗稱時間差', off: -0.7, balls: 2.5, apex: 0.35, depth: 0.8, att: 'mb', fake: true,
+      lines: ['攻擊手先做<em>A快的假動作</em>，落地後再起跳', '球比A快高一點，約<b>網上2~3顆球</b>'] },
+    { k: '4', name: '平拉開', alias: '俗稱平拉開、4號位快球', off: -5.4, balls: 3, apex: 0.35, depth: 1, att: 'oh1',
+      lines: ['在<em>4 號位邊線</em>附近', '球又平又快拉到邊線，約<b>網上3顆球</b>'] },
+    { k: 'H', name: '4號位高球', alias: '俗稱四號位高球、長攻', off: -5.4, balls: 5, apex: 3, depth: 1.2, att: 'oh1',
+      lines: ['在<em>4 號位邊線</em>附近', '球拋高再落下，擊球點約<b>網上5顆球</b>'] },
+    { k: '3', name: '半高球', alias: '俗稱3號位半高', off: -1.6, balls: 3, apex: 0.9, depth: 1, att: 'oh2',
+      lines: ['在<em>3 號位</em>、舉球員前方兩步', '半高球，約<b>網上3顆球</b>'] },
+    { k: '2', name: '背舉高球', alias: '俗稱背舉、2號位高球', off: 2.6, balls: 5, apex: 2.4, depth: 1, att: 'opp',
+      lines: ['在<em>2 號位邊線</em>附近，往背後舉', '背舉高球，擊球點約<b>網上5顆球</b>'] },
+    { k: 'P', name: 'Pipe', alias: '俗稱 Pipe、6號位後攻', off: -1.5, balls: 4, apex: 1.2, depth: 3.6, att: 'oh2',
+      lines: ['在<em>6 號位、3 公尺線後</em>起跳', '後排攻擊，約<b>網上4顆球</b>'] },
+    { k: 'R', name: '1號位後攻', alias: '俗稱 1號位後攻', off: 2, balls: 4, apex: 1.4, depth: 3.6, att: 'opp',
+      lines: ['在<em>1 號位、3 公尺線後</em>起跳', '後排攻擊，約<b>網上4顆球</b>'] }
+  ];
+  const PARAMS = ['off', 'balls', 'apex', 'depth', 'att'];
+
+  const $ = id => document.getElementById(id);
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+  const el = (tag, attrs, text) => { const n = document.createElementNS(NS, tag); for (const k in attrs) n.setAttribute(k, attrs[k]); if (text != null) n.textContent = text; return n; };
+  const sy = h => FLOOR - h;
+
+  function fresh() {
+    const a = PRESETS[0];
+    return { sel: 'A', p: pick(a), custom: [], setterX: 6, jump: 0, netH: 2.43, decoy: '', speed: 0.25 };
+  }
+  function pick(s) { const o = {}; PARAMS.forEach(k => { o[k] = s[k]; }); return o; }
+  let st = (function () {
+    try { const s = JSON.parse(localStorage.getItem(KEY)); if (s && s.p) return { ...fresh(), ...s }; } catch (e) {}
+    return fresh();
+  })();
+  const save = () => { try { localStorage.setItem(KEY, JSON.stringify(st)); } catch (e) {} };
+
+  const allSigs = () => PRESETS.concat(st.custom);
+  const sigOf = k => allSigs().find(s => s.k === k);
+  const isCustom = k => st.custom.some(s => s.k === k);
+
+  function players() {
+    const list = (window.vbScorer && window.vbScorer.players()) || [];
+    return list.filter(p => p.id !== 'l');
+  }
+  function playerLabel(id) {
+    const p = players().find(x => x.id === id);
+    return p ? p.role + ' #' + p.no : id;
+  }
+  function playerNo(id) { const p = players().find(x => x.id === id); return p ? p.no : ''; }
+
+  // 物理：舉球出手 → 最高點 → 擊球點
+  function flight(p) {
+    const h0 = st.jump ? 3.0 : 2.5;
+    const x0 = st.setterX;
+    const x1 = clamp(st.setterX + p.off, -0.5, 9.5);
+    const h1 = st.netH + p.balls * BALL;
+    const H = Math.max(h1 + p.apex, h0 + 0.05);
+    const tUp = Math.sqrt(2 * (H - h0) / G), tDn = Math.sqrt(2 * (H - h1) / G);
+    const T = tUp + tDn;
+    const vx = (x1 - x0) / T, vy = G * tUp;
+    const at = t => ({ x: x0 + vx * t, h: h0 + vy * t - G * t * t / 2 });
+    const tempo = T < 0.55 ? 1 : T < 1.0 ? 2 : 3;
+    return { x0, h0, x1, h1, H, T, tUp, at, tempo, apexX: x0 + vx * tUp, dist: Math.abs(x1 - x0), depth: p.depth };
+  }
+
+  // 助跑路線（俯視：x 沿網，y 離網距離）
+  function approach(p, f, slide) {
+    const hit = { x: f.x1, y: p.depth };
+    if (slide) return [{ x: st.setterX - 1.6, y: 3.2 }, { x: st.setterX - 0.3, y: 1.3 }, hit];
+    const sx = f.x1 < 1.5 ? -0.6 : f.x1 > 7.5 ? 9.6 : f.x1 + (p.off < 0 ? -0.3 : 0.3);
+    return [{ x: sx, y: Math.min(p.depth + 3.2, 9.3) }, hit];
+  }
+  function along(path, k) {
+    const segs = [];
+    let total = 0;
+    for (let i = 1; i < path.length; i++) { const d = Math.hypot(path[i].x - path[i - 1].x, path[i].y - path[i - 1].y); segs.push(d); total += d; }
+    let rem = clamp(k, 0, 1) * total;
+    for (let i = 0; i < segs.length; i++) {
+      if (rem <= segs[i] || i === segs.length - 1) { const u = segs[i] ? Math.min(1, rem / segs[i]) : 1; return { x: path[i].x + (path[i + 1].x - path[i].x) * u, y: path[i].y + (path[i + 1].y - path[i].y) * u }; }
+      rem -= segs[i];
+    }
+    return path[path.length - 1];
+  }
+
+  const fmt = (n, d = 1) => (Math.round(n * Math.pow(10, d)) / Math.pow(10, d)).toString();
+  function autoLines(p, f) {
+    const off = f.x1 - st.setterX;
+    let pos;
+    if (Math.abs(off) < 0.25) pos = '在舉球員<em>正上方</em>';
+    else {
+      const steps = Math.abs(off) / STEP;
+      const stepTxt = steps < 1.5 ? '一步左右' : steps < 4 ? '約 ' + Math.round(steps) + ' 步' : '約 ' + fmt(Math.abs(off)) + ' 公尺';
+      pos = '位於舉球員<em>' + (off < 0 ? '前方' : '背後') + stepTxt + '</em>';
+    }
+    if (f.x1 < 1.2) pos += '（4 號位邊線）';
+    else if (f.x1 > 7.8) pos += '（2 號位邊線）';
+    if (p.depth >= 3) pos += '，<em>3 公尺線後</em>起跳';
+    let hgt = '球的高度約<b>網上' + fmt(p.balls, 2) + '顆球</b>';
+    if (p.apex >= 1) hgt += '，先拋高 ' + fmt(p.apex) + 'm 再落下';
+    return [pos, hgt];
+  }
+
+  function modified() {
+    const s = sigOf(st.sel);
+    return !s || PARAMS.some(k => k === 'att' ? s[k] !== st.p[k] : Math.abs(s[k] - st.p[k]) > 1e-6);
+  }
+
+  let anim = null; // { t } 動畫中的時間（秒，0＝舉球員觸球）
+
+  function render() {
+    const p = st.p;
+    const s = sigOf(st.sel) || PRESETS[0];
+    const f = flight(p);
+    const mod = modified();
+    const idx = allSigs().indexOf(s) + 1;
+
+    // 暗號表
+    $('sp-sigs').innerHTML = allSigs().map(x => '<button type="button" class="sig' + (isCustom(x.k) ? ' mine' : '') + '" data-sig="' + esc(x.k) + '" aria-pressed="' + (x.k === st.sel) + '">' + esc(x.k) + '<small>' + esc(x.name) + '</small></button>').join('');
+
+    $('sp-badge').textContent = idx;
+    $('sp-title').textContent = '戰術：' + s.k;
+    $('sp-mod').hidden = !mod;
+    const lines = !mod && s.lines ? s.lines : autoLines(p, f);
+    $('sp-desc').innerHTML = '<span class="alias">' + esc(s.alias || s.name) + (mod ? '（已調整）' : '') + '</span>' + lines.map(l => '<span>' + l + '</span>').join('');
+
+    drawNet(p, s, f);
+    drawTop(p, s, f);
+
+    const tempoTxt = ['', '第一節奏・快攻：舉球員觸球時，攻擊手已經起跳在空中', '第二節奏：舉球員觸球時，攻擊手正踏出最後兩步助跑', '第三節奏・高球：球離手、看清楚落點後再開始助跑'][f.tempo];
+    $('sp-stats').innerHTML =
+      stat(fmt(f.dist) + ' m', '舉球距離（約 ' + Math.max(1, Math.round(f.dist / STEP)) + ' 步）') +
+      stat(fmt(f.T, 2) + ' s', '球在空中的時間') +
+      stat(fmt(f.H, 2) + ' m', '最高點離地') +
+      stat(fmt(f.h1, 2) + ' m', '擊球點離地（網上 ' + fmt(f.h1 - st.netH, 2) + ' m）') +
+      '<div class="tempo">' + esc(tempoTxt) + '</div>' +
+      '<div class="tempo">攻擊手：' + esc(playerLabel(p.att)) + (st.decoy ? '・誘攻：' + esc((sigOf(st.decoy) || {}).name || '') : '') + '</div>';
+
+    // 控制項
+    const setV = (id, v, out) => { $(id).value = v; $(id + '-o').textContent = out; };
+    const off = p.off;
+    setV('sp-off', off, Math.abs(off) < 0.05 ? '正上方' : (off < 0 ? '前方 ' : '背後 ') + fmt(Math.abs(off)) + ' m（' + fmt(Math.abs(off) / STEP) + ' 步）');
+    setV('sp-balls', p.balls, fmt(p.balls, 2) + ' 顆球');
+    setV('sp-apex', p.apex, fmt(p.apex, 2) + ' m');
+    setV('sp-depth', p.depth, fmt(p.depth) + ' m' + (p.depth >= 3 ? '・後排攻擊' : ''));
+    setV('sp-setx', st.setterX, fmt(st.setterX) + ' m');
+    const opts = players().map(x => '<option value="' + x.id + '">' + esc(x.role + ' #' + x.no) + '</option>').join('');
+    if ($('sp-att').dataset.opts !== opts) { $('sp-att').innerHTML = opts; $('sp-att').dataset.opts = opts; }
+    $('sp-att').value = p.att;
+    const dopts = '<option value="">無</option>' + allSigs().map(x => '<option value="' + esc(x.k) + '">' + esc(x.k + '・' + x.name) + '</option>').join('');
+    if ($('sp-decoy').dataset.opts !== dopts) { $('sp-decoy').innerHTML = dopts; $('sp-decoy').dataset.opts = dopts; }
+    $('sp-decoy').value = st.decoy;
+    $('sp-jump').value = String(st.jump);
+    $('sp-netH').value = String(st.netH);
+    $('sp-speed').value = String(st.speed);
+    $('sp-del').hidden = !isCustom(st.sel);
+  }
+  const stat = (v, k) => '<div class="stat"><span class="v">' + v + '</span><span class="k">' + esc(k) + '</span></div>';
+
+  function hitterState(f, path, t) {
+    // 起跳前 0.35 秒離地，助跑 0.9 秒
+    const tJump = f.T - 0.35, tRun = tJump - 0.9;
+    if (t == null) return { pos: path[path.length - 1], h: f.h1 - 0.25, air: true };
+    if (t < tRun) return { pos: path[0], h: 1.6, air: false };
+    if (t < tJump) return { pos: along(path, (t - tRun) / 0.9), h: 1.6, air: false };
+    const k = clamp((t - tJump) / 0.35, 0, 1);
+    const top = f.h1 - 0.25;
+    const up = Math.sin(Math.min(k, 1) * Math.PI / 2);
+    const fall = t > f.T ? clamp((t - f.T) / 0.4, 0, 1) : 0;
+    return { pos: path[path.length - 1], h: 1.6 + (top - 1.6) * up - (top - 1.6) * fall * fall, air: true };
+  }
+
+  function drawNet(p, s, f) {
+    const svg = $('sp-net');
+    const decoy = st.decoy && sigOf(st.decoy);
+    const fd = decoy ? flight(decoy) : null;
+    const top = sy(Math.max(f.H, fd ? fd.H : 0, st.netH + 1.6) + 0.45);
+    svg.setAttribute('viewBox', '-1.35 ' + fmt(top - 0.1, 2) + ' 11.7 ' + fmt(7.5 - top, 2));
+    svg.innerHTML = '';
+    // 高度刻度
+    for (let h = 1; h <= Math.ceil(FLOOR - top); h++) {
+      svg.appendChild(el('line', { class: 'ns-tickline', x1: -0.9, y1: sy(h), x2: 10.2, y2: sy(h) }));
+      svg.appendChild(el('text', { class: 'ns-tick', x: -1.0, y: sy(h) }, h + 'm'));
+    }
+    svg.appendChild(el('line', { class: 'ns-floor', x1: -1.2, y1: sy(0), x2: 10.3, y2: sy(0) }));
+    // 球網
+    const nb = st.netH - 1;
+    [-0.5, 9.5].forEach(x => svg.appendChild(el('line', { class: 'ns-post', x1: x, y1: sy(0), x2: x, y2: sy(st.netH + 0.1) })));
+    for (let x = 0; x <= 9.001; x += 0.25) svg.appendChild(el('line', { class: 'ns-mesh', x1: x, y1: sy(nb), x2: x, y2: sy(st.netH) }));
+    for (let h = nb; h <= st.netH + 0.001; h += 0.125) svg.appendChild(el('line', { class: 'ns-mesh', x1: 0, y1: sy(h), x2: 9, y2: sy(h) }));
+    svg.appendChild(el('line', { class: 'ns-tape', x1: -0.5, y1: sy(st.netH), x2: 9.5, y2: sy(st.netH) }));
+    svg.appendChild(el('line', { class: 'ns-tape', x1: -0.5, y1: sy(nb), x2: 9.5, y2: sy(nb) }));
+    [0, 9].forEach(x => svg.appendChild(el('line', { class: 'ns-ant', x1: x, y1: sy(nb), x2: x, y2: sy(st.netH + 0.8) })));
+    [[1.5, '4 號位'], [4.5, '3 號位'], [7.5, '2 號位']].forEach(([x, t]) => svg.appendChild(el('text', { class: 'ns-pos', x, y: sy(0) + 0.65 }, t)));
+    // 舉球員（三角形）
+    const sx = st.setterX;
+    svg.appendChild(el('polygon', { class: 'ns-setter', points: [sx - 0.32 + ',' + sy(0), sx + 0.32 + ',' + sy(0), sx + ',' + sy(0.62)].join(' ') }));
+    svg.appendChild(el('text', { class: 'ns-setter-lbl', x: sx, y: sy(0) + 0.32 }, '舉球員'));
+
+    // 網上幾顆球
+    const n = Math.ceil(p.balls - 1e-6);
+    for (let i = 0; i < n; i++) svg.appendChild(el('circle', { class: 'ns-stack', cx: f.x1, cy: sy(st.netH + BALL / 2 + i * BALL), r: BALL / 2 }));
+    const lblX = f.x1 + (f.x1 > 8 ? -0.25 : 0.25);
+    svg.appendChild(el('text', { class: 'ns-hgt', x: lblX, y: sy(st.netH + Math.min(p.balls, 3) * BALL / 2) + 0.08, 'text-anchor': f.x1 > 8 ? 'end' : 'start' }, '網上 ' + fmt(p.balls, 2) + ' 顆球'));
+
+    // 弧線
+    const pathD = f2 => { let d = ''; for (let i = 0; i <= 40; i++) { const q = f2.at(f2.T * i / 40); d += (i ? 'L' : 'M') + q.x.toFixed(3) + ' ' + sy(q.h).toFixed(3); } return d; };
+    if (fd) svg.appendChild(el('path', { class: 'ns-path decoy', d: pathD(fd) }));
+    svg.appendChild(el('path', { class: 'ns-path', d: pathD(f) }));
+
+    // 最高點
+    if (f.H - f.h1 > 0.15) {
+      svg.appendChild(el('circle', { class: 'ns-apex', cx: f.apexX, cy: sy(f.H), r: 0.06 }));
+      svg.appendChild(el('text', { class: 'ns-apex-lbl', x: f.apexX, y: sy(f.H) - 0.14 }, '最高 ' + fmt(f.H, 2) + 'm'));
+    }
+
+    // 攻擊手
+    const t = anim ? anim.t : null;
+    const drawHitter = (ff, pp, path, cls, label) => {
+      const hs = hitterState(ff, path, t);
+      const hx = hs.pos.x;
+      svg.appendChild(el('circle', { class: 'ns-hitter ' + cls, cx: hx, cy: sy(hs.h), r: 0.24 }));
+      svg.appendChild(el('text', { class: 'ns-hitter-no', x: hx, y: sy(hs.h) }, label));
+    };
+    if (fd) drawHitter(fd, decoy, approach(decoy, fd, decoy.slide), 'decoy', '誘');
+    drawHitter(f, p, approach(p, f, s.slide), '', playerNo(p.att) || '攻');
+
+    // 球
+    const bt = t == null ? f.T : clamp(t, 0, f.T + 0.25);
+    let bq;
+    if (t != null && t < 0) bq = { x: f.x0, h: f.h0 };
+    else if (bt <= f.T) bq = f.at(bt);
+    else { const k = (bt - f.T) / 0.25; bq = { x: f.x1 + (f.x1 < 4.5 ? 0.6 : -0.6) * k, h: f.h1 - 0.8 * k }; }
+    svg.appendChild(el('circle', { class: 'ns-ball', cx: bq.x, cy: sy(bq.h), r: BALL / 2 + 0.03 }));
+    if (t != null) svg.appendChild(el('text', { class: 'ns-clock', x: 10.2, y: top + 0.35, 'text-anchor': 'end' }, (t < 0 ? '觸球前 ' + fmt(-t, 2) : '觸球後 ' + fmt(t, 2)) + ' s'));
+
+    // 拖曳把手
+    const hh = el('circle', { class: 'ns-handle', cx: f.x1, cy: sy(f.h1), r: 0.42, 'data-h': 'hit', tabindex: 0, role: 'slider', 'aria-label': '擊球點：左右調位置，上下調高度' });
+    svg.appendChild(hh);
+    if (f.H - f.h1 > 0.15 || p.apex > 0.15) svg.appendChild(el('circle', { class: 'ns-handle', cx: f.apexX, cy: sy(f.H), r: 0.36, 'data-h': 'apex', tabindex: 0, role: 'slider', 'aria-label': '最高點：上下調弧度' }));
+  }
+
+  function drawTop(p, s, f) {
+    const svg = $('sp-top');
+    svg.innerHTML = '';
+    // 我方半場：x 沿網，y 離網距離（網在上方）
+    svg.appendChild(el('rect', { class: 'ts-court', x: 0, y: 0, width: 9, height: 9 }));
+    svg.appendChild(el('rect', { class: 'ts-line', x: 0, y: 0, width: 9, height: 9 }));
+    svg.appendChild(el('line', { class: 'ts-line', x1: 0, y1: 3, x2: 9, y2: 3 }));
+    svg.appendChild(el('line', { class: 'ts-net', x1: -0.6, y1: 0, x2: 9.6, y2: 0 }));
+    svg.appendChild(el('text', { class: 'ts-lbl', x: 4.5, y: -0.35 }, '球網'));
+    svg.appendChild(el('text', { class: 'ts-lbl', x: 4.5, y: 3.6 }, '3 公尺線'));
+    const t = anim ? anim.t : null;
+    const decoy = st.decoy && sigOf(st.decoy);
+    const drawRun = (ff, pp, slide, cls, label) => {
+      const path = approach(pp, ff, slide);
+      svg.appendChild(el('polyline', { class: 'ts-run ' + cls, points: path.map(q => q.x.toFixed(2) + ',' + q.y.toFixed(2)).join(' ') }));
+      const hs = hitterState(ff, path, t);
+      svg.appendChild(el('circle', { class: 'ts-hitter ' + cls, cx: hs.pos.x, cy: hs.pos.y, r: 0.42 }));
+      svg.appendChild(el('text', { class: 'ns-hitter-no', x: hs.pos.x, y: hs.pos.y, style: 'font-size:.42px;fill:' + (cls ? '#fff' : 'var(--ink)') }, label));
+    };
+    if (decoy) { const fd = flight(decoy); drawRun(fd, decoy, decoy.slide, 'decoy', '誘'); }
+    const setterY = 0.7;
+    svg.appendChild(el('line', { class: 'ts-set', x1: st.setterX, y1: setterY, x2: f.x1, y2: p.depth }));
+    svg.appendChild(el('circle', { class: 'ts-dot', cx: f.x1, cy: p.depth, r: 0.2 }));
+    drawRun(f, p, s.slide, '', playerNo(p.att) || '攻');
+    svg.appendChild(el('circle', { class: 'ts-setter', cx: st.setterX, cy: setterY, r: 0.42 }));
+    svg.appendChild(el('text', { class: 'ns-hitter-no', x: st.setterX, y: setterY, style: 'font-size:.4px' }, '舉'));
+  }
+
+  function play() {
+    if (anim) return;
+    const f = flight(st.p);
+    const decoy = st.decoy && sigOf(st.decoy);
+    const fd = decoy ? flight(decoy) : null;
+    const t0s = Math.min(-0.3, f.T - 1.35, fd ? fd.T - 1.35 : 0);
+    const t1s = Math.max(f.T, fd ? fd.T : 0) + 0.45;
+    const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduce) { render(); return; }
+    const speed = Number(st.speed) || 1;
+    const start = performance.now();
+    anim = { t: t0s };
+    $('sp-play').disabled = true;
+    (function step(now) {
+      anim.t = t0s + (now - start) / 1000 * speed;
+      if (anim.t >= t1s) { anim = null; $('sp-play').disabled = false; render(); return; }
+      render();
+      requestAnimationFrame(step);
+    })(start);
+  }
+
+  // 拖曳擊球點 / 最高點
+  let drag = null;
+  function pt(svg, e) {
+    const q = svg.createSVGPoint(); q.x = e.clientX; q.y = e.clientY;
+    const m = svg.getScreenCTM(); return m ? q.matrixTransform(m.inverse()) : { x: 0, y: 0 };
+  }
+  function applyHit(x, h) {
+    st.p.off = Math.round(clamp(x - st.setterX, -6, 3.5) * 10) / 10;
+    st.p.balls = Math.round(clamp((h - st.netH) / BALL, 0.5, 12) * 4) / 4;
+  }
+  function applyApex(h) {
+    const f = flight(st.p);
+    st.p.apex = Math.round(clamp(h - f.h1, 0, 4) * 20) / 20;
+  }
+
+  function bind() {
+    const svg = $('sp-net');
+    svg.addEventListener('pointerdown', e => {
+      const hnd = e.target.closest('[data-h]');
+      if (!hnd || anim) return;
+      drag = hnd.dataset.h;
+      try { svg.setPointerCapture(e.pointerId); } catch (err) {}
+      e.preventDefault();
+    });
+    svg.addEventListener('pointermove', e => {
+      if (!drag) return;
+      const q = pt(svg, e);
+      if (drag === 'hit') applyHit(q.x, FLOOR - q.y); else applyApex(FLOOR - q.y);
+      render();
+    });
+    const end = () => { if (drag) { drag = null; save(); render(); } };
+    svg.addEventListener('pointerup', end);
+    svg.addEventListener('pointercancel', end);
+    svg.addEventListener('keydown', e => {
+      const hnd = e.target.closest('[data-h]');
+      if (!hnd) return;
+      const f = flight(st.p);
+      const mv = { ArrowLeft: [-0.1, 0], ArrowRight: [0.1, 0], ArrowUp: [0, 1], ArrowDown: [0, -1] }[e.key];
+      if (!mv) return;
+      e.preventDefault();
+      if (hnd.dataset.h === 'hit') applyHit(f.x1 + mv[0], f.h1 + mv[1] * BALL / 4);
+      else applyApex(f.H + mv[1] * 0.05);
+      save(); render();
+      const again = svg.querySelector('[data-h="' + hnd.dataset.h + '"]'); if (again) again.focus();
+    });
+
+    $('sp-sigs').addEventListener('click', e => {
+      const b = e.target.closest('[data-sig]');
+      if (!b) return;
+      const s = sigOf(b.dataset.sig);
+      st.sel = s.k; st.p = pick(s);
+      if (st.decoy === s.k) st.decoy = '';
+      save(); render();
+    });
+    const num = (id, key) => $(id).addEventListener('input', e => { st.p[key] = Number(e.target.value); save(); render(); });
+    num('sp-off', 'off'); num('sp-balls', 'balls'); num('sp-apex', 'apex'); num('sp-depth', 'depth');
+    $('sp-setx').addEventListener('input', e => { st.setterX = Number(e.target.value); save(); render(); });
+    $('sp-att').addEventListener('change', e => { st.p.att = e.target.value; save(); render(); });
+    $('sp-decoy').addEventListener('change', e => { st.decoy = e.target.value; save(); render(); });
+    $('sp-jump').addEventListener('change', e => { st.jump = Number(e.target.value); save(); render(); });
+    $('sp-netH').addEventListener('change', e => { st.netH = Number(e.target.value); save(); render(); });
+    $('sp-speed').addEventListener('change', e => { st.speed = Number(e.target.value); save(); });
+    $('sp-play').addEventListener('click', play);
+    $('sp-reset').addEventListener('click', () => { const s = sigOf(st.sel); if (s) { st.p = pick(s); st.setterX = 6; save(); render(); } });
+    $('sp-save').addEventListener('click', () => {
+      const k = $('sp-new-k').value.trim();
+      const name = $('sp-new-name').value.trim() || k;
+      const msg = $('sp-save-msg');
+      if (!k) { msg.textContent = '請先輸入暗號代號，例如 X1。'; $('sp-new-k').focus(); return; }
+      if (PRESETS.some(s => s.k === k)) { msg.textContent = '「' + k + '」是內建暗號，請換一個代號。'; return; }
+      const sig = { k, name, alias: name, ...pick(st.p), slide: !!(sigOf(st.sel) || {}).slide, mine: true };
+      const i = st.custom.findIndex(s => s.k === k);
+      if (i >= 0) st.custom[i] = sig; else st.custom.push(sig);
+      st.sel = k;
+      $('sp-new-k').value = ''; $('sp-new-name').value = '';
+      msg.textContent = '已儲存暗號「' + k + '」。';
+      save(); render();
+    });
+    $('sp-del').addEventListener('click', () => {
+      const k = st.sel;
+      st.custom = st.custom.filter(s => s.k !== k);
+      if (st.decoy === k) st.decoy = '';
+      st.sel = 'A'; st.p = pick(PRESETS[0]);
+      $('sp-save-msg').textContent = '已刪除暗號「' + k + '」。';
+      save(); render();
+    });
+  }
+
+  bind();
+  window.vbSet = { render };
 })();
 </script>
 <script>
@@ -1280,10 +1810,10 @@ tfoot td { font-weight: 700; border-bottom: 0; }
 
   // 分頁切換
   function show(view) {
-    $('view-score').hidden = view !== 'score';
-    $('view-sim').hidden = view !== 'sim';
+    ['score', 'sim', 'set'].forEach(v => { $('view-' + v).hidden = v !== view; });
     document.querySelectorAll('[data-view]').forEach(b => b.setAttribute('aria-selected', String(b.dataset.view === view)));
     if (view === 'sim') render();
+    if (view === 'set' && window.vbSet) window.vbSet.render();
     try { localStorage.setItem('vb-view', view); } catch (e) {}
   }
   document.querySelectorAll('[data-view]').forEach(b => b.addEventListener('click', () => show(b.dataset.view)));
@@ -1291,7 +1821,7 @@ tfoot td { font-weight: 700; border-bottom: 0; }
   bind();
   let start = 'score';
   try { start = localStorage.getItem('vb-view') || 'score'; } catch (e) {}
-  if (location.hash === '#sim') start = 'sim';
-  show(start === 'sim' ? 'sim' : 'score');
+  if (location.hash === '#sim' || location.hash === '#set') start = location.hash.slice(1);
+  show(['sim', 'set'].includes(start) ? start : 'score');
 })();
 </script>
