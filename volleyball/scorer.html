@@ -177,7 +177,8 @@ tfoot td { font-weight: 700; border-bottom: 0; }
 
 /* Tabs */
 .tabs { display: flex; gap: 4px; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 4px; width: fit-content; max-width: 100%; }
-.tabs button { border: 0; background: transparent; border-radius: 9px; padding: 8px 18px; font-weight: 700; color: var(--muted); }
+.tabs button { border: 0; background: transparent; border-radius: 9px; padding: 8px 16px; font-weight: 700; color: var(--muted); white-space: nowrap; }
+@media (max-width: 520px) { .tabs { width: 100%; } .tabs button { flex: 1; padding: 8px 4px; font-size: .88rem; } }
 .tabs button[aria-selected="true"] { background: var(--net); color: #F4F6FA; }
 .view { display: grid; gap: 18px; }
 
@@ -330,6 +331,73 @@ tfoot td { font-weight: 700; border-bottom: 0; }
 .field select, .field input[type=text] { border: 1px solid var(--line); background: var(--bg); color: var(--ink); border-radius: 8px; padding: 7px 10px; font: inherit; font-size: .9rem; width: 100%; }
 .fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
 @media (max-width: 420px) { .fields { grid-template-columns: 1fr; } }
+
+/* Practice planner */
+.prac { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr); gap: 18px; align-items: start; }
+@media (max-width: 860px) { .prac { grid-template-columns: 1fr; } }
+.prac-col { display: grid; gap: 14px; min-width: 0; }
+.cats { display: flex; flex-wrap: wrap; gap: 6px; }
+.cat-chip { border: 1px solid var(--line); background: var(--surface); border-radius: 999px; padding: 3px 10px; font-size: .8rem; font-weight: 700; display: inline-flex; align-items: center; gap: 6px; }
+.cat-chip[aria-pressed="true"] { background: var(--net); color: #F4F6FA; border-color: var(--net); }
+.cdot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; flex: none; }
+.drills { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; max-height: 460px; overflow-y: auto; }
+.drill { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px; align-items: center; padding: 8px 10px; border: 1px solid var(--line); border-radius: 10px; }
+.drill .nm { font-weight: 700; font-size: .9rem; display: flex; align-items: center; gap: 6px; }
+.drill .ds { font-size: .76rem; color: var(--muted); }
+.drill .add { border: 1px solid var(--court); color: var(--court); background: transparent; border-radius: 8px; padding: 4px 10px; font-weight: 700; white-space: nowrap; }
+.drill .add:hover { background: var(--court); color: #fff; }
+.plan-head { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.plan-head .wide { grid-column: 1 / -1; }
+@media (max-width: 420px) { .plan-head { grid-template-columns: 1fr 1fr; } }
+.plan-head input, .plan-head select { border: 1px solid var(--line); background: var(--bg); color: var(--ink); border-radius: 8px; padding: 7px 8px; font: inherit; font-size: .9rem; width: 100%; min-width: 0; }
+.dist { display: flex; height: 14px; border-radius: 7px; overflow: hidden; background: var(--bg); border: 1px solid var(--line); }
+.dist span { display: block; height: 100%; }
+.dist-legend { display: flex; flex-wrap: wrap; gap: 4px 12px; font-size: .76rem; color: var(--muted); }
+.dist-legend span { display: inline-flex; align-items: center; gap: 5px; font-variant-numeric: tabular-nums; }
+.sumline { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 14px; }
+.sumline .big { font: 800 1.9rem/1 var(--f-display); font-variant-numeric: tabular-nums; }
+.sumline .big.over { color: var(--lose); }
+.sumline .txt { font-size: .84rem; color: var(--muted); }
+.plan { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.item { display: grid; grid-template-columns: 3.4em minmax(0, 1fr); gap: 10px; padding: 10px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); border-left-width: 5px; }
+.item.done { opacity: .55; }
+.item .tm { font: 700 .95rem/1.2 var(--f-display); font-variant-numeric: tabular-nums; color: var(--muted); }
+.item .tm b { display: block; color: var(--ink); font-size: 1.1rem; }
+.item .body { display: grid; gap: 6px; min-width: 0; }
+.item .row1 { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; }
+.item .title { font-weight: 700; flex: 1; min-width: 8em; }
+.item .cat { font-size: .72rem; font-weight: 700; padding: 1px 8px; border-radius: 999px; color: #fff; }
+.mins { display: inline-flex; align-items: center; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+.mins button { border: 0; background: var(--bg); width: 28px; height: 28px; font-weight: 700; }
+.mins input { width: 3em; border: 0; text-align: center; font: 700 .9rem var(--f-display); background: var(--surface); color: var(--ink); -moz-appearance: textfield; }
+.mins input::-webkit-outer-spin-button, .mins input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.mins span { font-size: .75rem; color: var(--muted); padding: 0 6px 0 2px; }
+.item .row2 { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 6px; }
+.item .row2 input, .item .row2 select { border: 1px solid var(--line); background: var(--bg); color: var(--ink); border-radius: 8px; padding: 5px 8px; font: inherit; font-size: .82rem; min-width: 0; }
+.item .tools { display: flex; gap: 4px; }
+.item .tools button { border: 1px solid var(--line); background: transparent; border-radius: 6px; width: 30px; height: 28px; font-size: .9rem; }
+.item .tools button:disabled { opacity: .35; }
+.item .tools .del { color: var(--lose); }
+.run { background: var(--net); color: #F4F6FA; border-radius: 14px; padding: 16px; display: grid; gap: 12px; box-shadow: var(--shadow); }
+.run .lbl { font-size: .74rem; letter-spacing: .12em; color: #AFC0DA; }
+.run .now { font-size: 1.3rem; font-weight: 700; }
+.run .note { color: #C9D3E4; font-size: .88rem; }
+.run .clock { font: 800 clamp(3.4rem, 16vw, 5.6rem)/1 var(--f-display); font-variant-numeric: tabular-nums; text-align: center; }
+.run .clock.over { color: #FF8C8C; }
+.run .bar { height: 8px; border-radius: 4px; background: rgba(255,255,255,.12); overflow: hidden; }
+.run .bar span { display: block; height: 100%; background: #FFB27D; }
+.run .next { font-size: .86rem; color: #C9D3E4; }
+.run .btns { display: flex; flex-wrap: wrap; gap: 8px; }
+.run .btns button { border: 1px solid rgba(255,255,255,.3); background: transparent; color: #F4F6FA; border-radius: 10px; padding: 8px 14px; font-weight: 700; }
+.run .btns .primary { background: #FFB27D; color: #1B2638; border-color: #FFB27D; }
+.run label { font-size: .82rem; color: #C9D3E4; display: inline-flex; gap: 6px; align-items: center; }
+.saved { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.saved li { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px; align-items: center; font-size: .86rem; padding: 6px 0; border-bottom: 1px solid var(--line); }
+.saved li span small { color: var(--muted); display: block; font-size: .74rem; }
+.saved li div { display: flex; gap: 6px; }
+.saved li button { border: 1px solid var(--line); background: transparent; border-radius: 8px; padding: 3px 10px; font-size: .8rem; }
+.saved li .del { color: var(--lose); }
+.copybox { width: 100%; min-height: 8em; border: 1px solid var(--line); border-radius: 8px; background: var(--bg); color: var(--ink); font: .82rem/1.5 var(--f-body); padding: 8px; }
 </style>
 
 <div class="wrap">
@@ -337,6 +405,7 @@ tfoot td { font-weight: 700; border-bottom: 0; }
     <button type="button" role="tab" data-view="score" aria-selected="true">計分</button>
     <button type="button" role="tab" data-view="sim" aria-selected="false">模擬對戰</button>
     <button type="button" role="tab" data-view="set" aria-selected="false">模擬配球</button>
+    <button type="button" role="tab" data-view="prac" aria-selected="false">球隊練習</button>
   </nav>
   <div class="view" id="view-score">
   <section class="board" aria-label="比分">
@@ -508,6 +577,62 @@ tfoot td { font-weight: 700; border-bottom: 0; }
             <button class="btn danger" type="button" id="sp-del" hidden>刪除這個暗號</button>
           </div>
           <p class="empty" id="sp-save-msg" style="padding:0">調整好滑桿後，取一個代號存起來，之後會出現在暗號表。</p>
+        </section>
+      </div>
+    </div>
+  </div>
+  <div class="view" id="view-prac" hidden>
+    <section class="run" id="pr-run" hidden aria-live="polite"></section>
+    <div class="prac">
+      <div class="prac-col">
+        <section class="panel">
+          <div class="panel-head"><h2>練習項目庫</h2><span class="label">按「＋ 加入」排進計畫</span></div>
+          <div class="cats" id="pr-cats" role="group" aria-label="練習類別"></div>
+          <ul class="drills" id="pr-drills"></ul>
+        </section>
+        <section class="panel">
+          <div class="panel-head"><h2>自訂練習項目</h2></div>
+          <div class="fields">
+            <label class="field">項目名稱<input type="text" id="pr-new-name" maxlength="20" placeholder="例如：一攻轉換練習"></label>
+            <label class="field">類別<select id="pr-new-cat"></select></label>
+            <label class="field">時長（分鐘）<input type="text" id="pr-new-min" inputmode="numeric" maxlength="3" value="15"></label>
+            <label class="field">練習重點<input type="text" id="pr-new-desc" maxlength="40" placeholder="例如：接發後 3 秒內完成進攻"></label>
+          </div>
+          <div class="ctl-row">
+            <button class="btn" type="button" id="pr-new-add">加入計畫</button>
+            <button class="btn" type="button" id="pr-new-lib">存到項目庫</button>
+          </div>
+          <p class="empty" id="pr-new-msg" style="padding:0"></p>
+        </section>
+        <section class="panel">
+          <div class="panel-head"><h2>課表範本與存檔</h2></div>
+          <div class="ctl-row" id="pr-templates"></div>
+          <ul class="saved" id="pr-saved"></ul>
+        </section>
+      </div>
+      <div class="prac-col">
+        <section class="panel">
+          <div class="panel-head"><h2>練習計畫</h2><span class="label" id="pr-range"></span></div>
+          <div class="plan-head">
+            <label class="field wide">計畫名稱<input type="text" id="pr-title" maxlength="24"></label>
+            <label class="field">日期<input type="date" id="pr-date"></label>
+            <label class="field">開始時間<input type="time" id="pr-start"></label>
+            <label class="field">預計總時長<select id="pr-target">
+              <option value="60">60 分鐘</option><option value="90">90 分鐘</option><option value="120">120 分鐘</option><option value="150">150 分鐘</option><option value="180">180 分鐘</option>
+            </select></label>
+          </div>
+          <div class="sumline"><span class="big" id="pr-total">0</span><span class="txt" id="pr-total-txt"></span></div>
+          <div class="dist" id="pr-dist" aria-hidden="true"></div>
+          <div class="dist-legend" id="pr-legend"></div>
+          <ol class="plan" id="pr-plan"></ol>
+          <div class="ctl-row">
+            <button class="btn" type="button" id="pr-go" style="background:var(--court);color:#fff;border-color:var(--court)">▶ 開始練習</button>
+            <button class="btn" type="button" id="pr-save">存檔這份計畫</button>
+            <button class="btn" type="button" id="pr-copy">複製文字（貼到群組）</button>
+            <button class="btn danger" type="button" id="pr-clear">清空</button>
+          </div>
+          <p class="empty" id="pr-msg" style="padding:0"></p>
+          <textarea class="copybox" id="pr-copybox" readonly hidden aria-label="練習計畫文字"></textarea>
         </section>
       </div>
     </div>
@@ -1387,6 +1512,311 @@ tfoot td { font-weight: 700; border-bottom: 0; }
 </script>
 <script>
 (function () {
+  const KEY = 'vb-practice-v1';
+  const CATS = [
+    ['熱身', '#6C8EBF'], ['傳球', '#2A9D8F'], ['接發', '#3BA3C4'], ['發球', '#8E6CC4'],
+    ['攻擊', '#D9652B'], ['攔網', '#A9552F'], ['防守', '#1D8656'], ['舉球', '#C98512'],
+    ['戰術', '#2C5E9E'], ['比賽', '#5A6E92'], ['體能', '#C2456E'], ['收操', '#7F8C9E']
+  ];
+  const COLOR = Object.fromEntries(CATS);
+  const WHO = ['全隊', '攻擊手', '攔中', '舉球', '自由球員 / 後排', '分組輪流'];
+
+  const LIB = [
+    ['熱身', '慢跑與動態伸展', 10, '繞場慢跑、開合跳、弓箭步、手臂繞環'],
+    ['熱身', '對傳熱身', 10, '兩人一組，上手、低手各 5 分鐘'],
+    ['熱身', '步法敏捷梯', 8, '小碎步、側併步、交叉步'],
+    ['傳球', '雙人對傳', 10, '上手與低手交替，要求不落地連續 30 下'],
+    ['傳球', '三角傳球', 10, '三人三角站位，傳完跟球跑位'],
+    ['傳球', '移動中傳球', 10, '教練拋球左右前後移動，到位後再傳'],
+    ['接發', '接發球站位', 15, 'W 型或 3 人接發，輪轉後重新站位'],
+    ['接發', '接發到位率計次', 15, '每人接 10 球，記錄到位幾球'],
+    ['發球', '定點發球', 10, '指定發到 1、5、6 號區'],
+    ['發球', '跳發與飄球', 10, '每人 10 球，記錄成功率'],
+    ['攻擊', '四號位扣球', 15, '舉球員固定，大砲輪流助跑扣球'],
+    ['攻擊', '快攻配合（A／B快）', 15, '攔中和舉球員練節奏，可先看「模擬配球」'],
+    ['攻擊', '後排攻擊', 10, '3 公尺線後起跳，Pipe 與 1 號位後攻'],
+    ['攔網', '攔網手型與移動', 10, '併步、交叉步移動到位後起跳'],
+    ['攔網', '雙人攔網配合', 10, '攔中與邊攔並肩，手不留縫'],
+    ['防守', '防守救球（教練扣球）', 15, '教練站高台扣球，後排輪流防起'],
+    ['防守', '魚躍與翻滾救球', 10, '先在軟墊上練動作，再加速'],
+    ['防守', '防守站位輪轉', 10, '依「模擬對戰」的空檔熱區調整站位'],
+    ['舉球', '舉球定點', 10, '舉到固定位置，網上 1～2 顆球的高度'],
+    ['舉球', '二傳跑位', 10, '一傳不到位時，舉球員跑位再舉'],
+    ['戰術', '戰術配球演練', 15, '照暗號表跑 A快、背飛、時間差'],
+    ['戰術', '輪轉站位演練', 10, '六個輪轉各跑一次接發與進攻'],
+    ['比賽', '分組對打', 20, '3 對 3 或 4 對 4，限制觸球次數'],
+    ['比賽', '六對六比賽', 30, '一局 25 分，可用「計分」頁記錄'],
+    ['比賽', '情境賽（20:20 開局）', 15, '練關鍵分的心理與執行'],
+    ['體能', '核心訓練', 10, '棒式、側棒式、登山者'],
+    ['體能', '跳躍與爆發力', 10, '箱跳、連續摸高'],
+    ['體能', '折返跑', 7, '9 公尺折返，30 秒一組'],
+    ['收操', '靜態伸展', 10, '大腿、小腿、肩膀，每個部位 30 秒'],
+    ['收操', '檢討與分享', 5, '今天做得好的一件事、下次要改的一件事']
+  ].map(([cat, name, min, desc], i) => ({ id: 'd' + i, cat, name, min, desc }));
+
+  const TEMPLATES = [
+    { name: '一般練習 120 分', target: 120, items: ['慢跑與動態伸展', '雙人對傳', '接發球站位', '四號位扣球', '快攻配合（A／B快）', '防守救球（教練扣球）', '定點發球', '六對六比賽', '靜態伸展'],
+      mins: { '六對六比賽': 25, '靜態伸展': 5 } },
+    { name: '賽前調整 90 分', target: 90, items: ['慢跑與動態伸展', '對傳熱身', '定點發球', '接發到位率計次', '戰術配球演練', '情境賽（20:20 開局）', '六對六比賽', '檢討與分享'],
+      mins: { '接發到位率計次': 10, '六對六比賽': 15 } },
+    { name: '防守強化 90 分', target: 90, items: ['慢跑與動態伸展', '步法敏捷梯', '防守救球（教練扣球）', '魚躍與翻滾救球', '攔網手型與移動', '雙人攔網配合', '防守站位輪轉', '分組對打', '靜態伸展'],
+      mins: { '魚躍與翻滾救球': 12, '分組對打': 10, '靜態伸展': 5 } },
+    { name: '體能日 60 分', target: 60, items: ['慢跑與動態伸展', '跳躍與爆發力', '核心訓練', '折返跑', '步法敏捷梯', '靜態伸展', '檢討與分享'],
+      mins: { '靜態伸展': 8 } }
+  ];
+
+  const $ = id => document.getElementById(id);
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const uid = () => Math.random().toString(36).slice(2, 9);
+  const today = () => { const d = new Date(); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); };
+  const allDrills = () => LIB.concat(st.lib);
+  const findDrill = name => allDrills().find(d => d.name === name);
+  const toItem = (d, min) => ({ uid: uid(), cat: d.cat, name: d.name, min: min || d.min, note: d.desc || '', who: '全隊', done: false });
+
+  function fromTemplate(t) {
+    return t.items.map(n => findDrill(n)).filter(Boolean).map(d => toItem(d, t.mins[d.name]));
+  }
+  function fresh() {
+    const t = TEMPLATES[0];
+    return { plan: { title: '一般練習', date: today(), start: '19:00', target: t.target, items: [] }, saved: [], lib: [], filter: '全部' };
+  }
+  let st = (function () {
+    try { const s = JSON.parse(localStorage.getItem(KEY)); if (s && s.plan) return { ...fresh(), ...s }; } catch (e) {}
+    const f = fresh();
+    return f;
+  })();
+  if (!st.plan.items.length && !st.saved.length && !localStorageHas()) st.plan.items = fromTemplate(TEMPLATES[0]);
+  function localStorageHas() { try { return !!localStorage.getItem(KEY); } catch (e) { return false; } }
+  const save = () => { try { localStorage.setItem(KEY, JSON.stringify(st)); } catch (e) {} };
+
+  const toMin = hhmm => { const [h, m] = (hhmm || '19:00').split(':').map(Number); return (h || 0) * 60 + (m || 0); };
+  const hhmm = m => { m = ((Math.round(m) % 1440) + 1440) % 1440; return String(Math.floor(m / 60)).padStart(2, '0') + ':' + String(m % 60).padStart(2, '0'); };
+  const total = () => st.plan.items.reduce((s, i) => s + i.min, 0);
+
+  function render() {
+    const P = st.plan;
+    // 類別篩選
+    const cats = ['全部'].concat(CATS.map(c => c[0]));
+    $('pr-cats').innerHTML = cats.map(c => '<button type="button" class="cat-chip" data-cat="' + c + '" aria-pressed="' + (st.filter === c) + '">' + (c !== '全部' ? '<span class="cdot" style="background:' + COLOR[c] + '"></span>' : '') + c + '</button>').join('');
+    const list = allDrills().filter(d => st.filter === '全部' || d.cat === st.filter);
+    $('pr-drills').innerHTML = list.map(d => '<li class="drill"><div><div class="nm"><span class="cdot" style="background:' + COLOR[d.cat] + '"></span>' + esc(d.name) + '</div><div class="ds">' + esc(d.cat) + '・' + d.min + ' 分鐘' + (d.desc ? '・' + esc(d.desc) : '') + '</div></div><button type="button" class="add" data-add="' + d.id + '">＋ 加入</button></li>').join('');
+    if (!$('pr-new-cat').options.length) $('pr-new-cat').innerHTML = CATS.map(c => '<option>' + c[0] + '</option>').join('');
+
+    $('pr-templates').innerHTML = TEMPLATES.map((t, i) => '<button class="btn" type="button" data-tpl="' + i + '">' + esc(t.name) + '</button>').join('');
+    $('pr-saved').innerHTML = st.saved.length ? st.saved.map(s => '<li><span>' + esc(s.title) + '<small>' + esc(s.date + ' ' + s.start) + '・' + s.items.reduce((a, i) => a + i.min, 0) + ' 分鐘・' + s.items.length + ' 項</small></span><div><button type="button" data-load="' + s.id + '">載入</button><button type="button" class="del" data-unsave="' + s.id + '">刪除</button></div></li>').join('')
+      : '<li class="empty" style="display:block;border:0">還沒有存檔。排好計畫後按「存檔這份計畫」，之後可以再載入。</li>';
+
+    // 表頭
+    const setVal = (id, v) => { if (document.activeElement !== $(id)) $(id).value = v; };
+    setVal('pr-title', P.title); setVal('pr-date', P.date); setVal('pr-start', P.start);
+    $('pr-target').value = String(P.target);
+    const tot = total();
+    const start = toMin(P.start);
+    $('pr-range').textContent = P.items.length ? hhmm(start) + '–' + hhmm(start + tot) : '';
+    const over = tot - P.target;
+    $('pr-total').textContent = tot + ' 分';
+    $('pr-total').className = 'big' + (over > 0 ? ' over' : '');
+    $('pr-total-txt').textContent = P.items.length ? (over > 0 ? '超過預計 ' + over + ' 分鐘，可以縮短項目或刪掉一項。' : over < 0 ? '還有 ' + (-over) + ' 分鐘可以安排。' : '剛好排滿預計時長。') + ' 共 ' + P.items.length + ' 項。' : '';
+
+    // 類別分配
+    const byCat = {};
+    P.items.forEach(i => { byCat[i.cat] = (byCat[i.cat] || 0) + i.min; });
+    const order = CATS.map(c => c[0]).filter(c => byCat[c]);
+    const denom = Math.max(tot, P.target) || 1;
+    $('pr-dist').innerHTML = order.map(c => '<span style="width:' + (byCat[c] / denom * 100).toFixed(2) + '%;background:' + COLOR[c] + '"></span>').join('');
+    $('pr-legend').innerHTML = order.map(c => '<span><i class="cdot" style="background:' + COLOR[c] + '"></i>' + c + ' ' + byCat[c] + ' 分（' + Math.round(byCat[c] / (tot || 1) * 100) + '%）</span>').join('');
+
+    // 項目清單
+    let t = start;
+    $('pr-plan').innerHTML = P.items.length ? P.items.map((it, i) => {
+      const s = t; t += it.min;
+      return '<li class="item' + (it.done ? ' done' : '') + '" style="border-left-color:' + COLOR[it.cat] + '" data-uid="' + it.uid + '">' +
+        '<div class="tm"><b>' + hhmm(s) + '</b>' + hhmm(t) + '</div>' +
+        '<div class="body"><div class="row1"><span class="cat" style="background:' + COLOR[it.cat] + '">' + esc(it.cat) + '</span><span class="title">' + esc(it.name) + '</span>' +
+        '<span class="mins"><button type="button" data-act="minus" aria-label="減 5 分鐘">−</button><input type="number" min="1" max="240" value="' + it.min + '" data-act="min" aria-label="' + esc(it.name) + ' 分鐘"><span>分</span><button type="button" data-act="plus" aria-label="加 5 分鐘">＋</button></span></div>' +
+        '<div class="row2"><input type="text" maxlength="60" value="' + esc(it.note) + '" placeholder="練習重點 / 備註" data-act="note" aria-label="備註"><select data-act="who" aria-label="參與對象">' + WHO.map(w => '<option' + (w === it.who ? ' selected' : '') + '>' + w + '</option>').join('') + '</select></div>' +
+        '<div class="tools"><button type="button" data-act="up" aria-label="上移"' + (i ? '' : ' disabled') + '>↑</button><button type="button" data-act="down" aria-label="下移"' + (i < P.items.length - 1 ? '' : ' disabled') + '>↓</button><button type="button" data-act="dup" aria-label="複製這一項">⧉</button><button type="button" class="del" data-act="del" aria-label="刪除">✕</button></div>' +
+        '</div></li>';
+    }).join('') : '<li class="empty" style="display:block">計畫是空的。從左邊的項目庫按「＋ 加入」，或套用一個課表範本。</li>';
+    $('pr-go').disabled = !P.items.length || !!run;
+  }
+
+  function msg(t) { $('pr-msg').textContent = t; }
+
+  function copyText() {
+    const P = st.plan;
+    let t = toMin(P.start);
+    const lines = [P.title + '（' + P.date + ' ' + hhmm(t) + '–' + hhmm(t + total()) + '，共 ' + total() + ' 分鐘）'];
+    P.items.forEach(it => {
+      const s = t; t += it.min;
+      lines.push(hhmm(s) + '–' + hhmm(t) + '【' + it.cat + '】' + it.name + '（' + it.min + ' 分' + (it.who !== '全隊' ? '・' + it.who : '') + '）' + (it.note ? '：' + it.note : ''));
+    });
+    return lines.join('\n');
+  }
+
+  // 練習計時
+  let run = null, tick = null, audio = null, wake = null;
+  function beep() {
+    try {
+      if (!audio) return;
+      [0, 0.35].forEach(d => {
+        const o = audio.createOscillator(), g = audio.createGain();
+        o.frequency.value = 880; o.connect(g); g.connect(audio.destination);
+        g.gain.setValueAtTime(0.25, audio.currentTime + d); g.gain.exponentialRampToValueAtTime(0.001, audio.currentTime + d + 0.28);
+        o.start(audio.currentTime + d); o.stop(audio.currentTime + d + 0.3);
+      });
+    } catch (e) {}
+  }
+  const elapsed = () => ((run.pausedAt || Date.now()) - run.t0) / 1000;
+  function startRun() {
+    if (!st.plan.items.length) return;
+    try { audio = audio || new (window.AudioContext || window.webkitAudioContext)(); } catch (e) {}
+    try { navigator.wakeLock && navigator.wakeLock.request('screen').then(w => { wake = w; }).catch(() => {}); } catch (e) {}
+    st.plan.items.forEach(i => { i.done = false; });
+    run = { idx: 0, t0: Date.now(), pausedAt: null, auto: false, beeped: false, began: Date.now() };
+    save(); render(); drawRun();
+    $('pr-run').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    tick = setInterval(updateRun, 250);
+  }
+  function drawRun() {
+    const box = $('pr-run');
+    if (!run) { box.hidden = true; return; }
+    const items = st.plan.items, it = items[run.idx], nx = items[run.idx + 1];
+    box.hidden = false;
+    box.innerHTML = '<div class="lbl">正在練習・第 ' + (run.idx + 1) + ' / ' + items.length + ' 項・' + esc(it.cat) + '・' + esc(it.who) + '</div>' +
+      '<div class="now">' + esc(it.name) + '</div>' + (it.note ? '<div class="note">' + esc(it.note) + '</div>' : '') +
+      '<div class="clock" id="pr-clock">00:00</div><div class="bar"><span id="pr-bar" style="width:0"></span></div>' +
+      '<div class="next">' + (nx ? '下一項：' + esc(nx.name) + '（' + nx.min + ' 分）' : '這是最後一項') + '</div>' +
+      '<div class="btns"><button type="button" class="primary" id="pr-pause">' + (run.pausedAt ? '▶ 繼續' : '❚❚ 暫停') + '</button><button type="button" id="pr-next">' + (nx ? '下一項 ⏭' : '完成練習') + '</button><button type="button" id="pr-plus1">＋1 分鐘</button><button type="button" id="pr-stop">結束</button></div>' +
+      '<label><input type="checkbox" id="pr-auto"' + (run.auto ? ' checked' : '') + '>時間到自動跳下一項（會響兩聲提醒）</label>';
+    updateRun();
+  }
+  function updateRun() {
+    if (!run) return;
+    const it = st.plan.items[run.idx];
+    const left = it.min * 60 - elapsed();
+    const a = Math.abs(Math.round(left));
+    $('pr-clock').textContent = (left < 0 ? '+' : '') + String(Math.floor(a / 60)).padStart(2, '0') + ':' + String(a % 60).padStart(2, '0');
+    $('pr-clock').classList.toggle('over', left < 0);
+    $('pr-bar').style.width = Math.min(100, elapsed() / (it.min * 60) * 100).toFixed(1) + '%';
+    if (left <= 0 && !run.beeped && !run.pausedAt) { run.beeped = true; beep(); if (run.auto) nextItem(); }
+  }
+  function nextItem() {
+    st.plan.items[run.idx].done = true;
+    if (run.idx >= st.plan.items.length - 1) { finishRun(true); return; }
+    run.idx++; run.t0 = Date.now(); run.pausedAt = null; run.beeped = false;
+    save(); render(); drawRun();
+  }
+  function finishRun(done) {
+    const mins = Math.round((Date.now() - run.began) / 60000);
+    clearInterval(tick); tick = null; run = null;
+    try { wake && wake.release(); } catch (e) {} wake = null;
+    save(); render(); drawRun();
+    msg(done ? '練習完成！實際用了約 ' + mins + ' 分鐘。' : '已結束練習，完成的項目會變淡顯示。');
+  }
+
+  function bind() {
+    const root = $('view-prac');
+    root.addEventListener('click', e => {
+      const b = e.target.closest('button');
+      if (!b) return;
+      const P = st.plan;
+      if (b.dataset.cat) { st.filter = b.dataset.cat; save(); render(); return; }
+      if (b.dataset.add) { const d = allDrills().find(x => x.id === b.dataset.add); P.items.push(toItem(d)); save(); render(); msg('已加入「' + d.name + '」。'); return; }
+      if (b.dataset.tpl) { const t = TEMPLATES[+b.dataset.tpl]; P.items = fromTemplate(t); P.target = t.target; P.title = t.name.replace(/ \d+ 分$/, ''); save(); render(); msg('已套用範本「' + t.name + '」。'); return; }
+      if (b.dataset.load) { const s = st.saved.find(x => x.id === b.dataset.load); st.plan = JSON.parse(JSON.stringify({ title: s.title, date: s.date, start: s.start, target: s.target, items: s.items })); save(); render(); msg('已載入「' + s.title + '」。'); return; }
+      if (b.dataset.unsave) {
+        if (b.dataset.armed) { st.saved = st.saved.filter(x => x.id !== b.dataset.unsave); save(); render(); msg('已刪除存檔。'); }
+        else { b.dataset.armed = '1'; b.textContent = '確定刪除？'; setTimeout(() => { if (b.isConnected) { delete b.dataset.armed; b.textContent = '刪除'; } }, 3000); }
+        return;
+      }
+      const li = b.closest('[data-uid]');
+      if (li && b.dataset.act) {
+        const i = P.items.findIndex(x => x.uid === li.dataset.uid);
+        const it = P.items[i];
+        const act = b.dataset.act;
+        if (act === 'minus') it.min = Math.max(1, it.min - 5);
+        if (act === 'plus') it.min = Math.min(240, it.min + 5);
+        if (act === 'up' && i > 0) [P.items[i - 1], P.items[i]] = [P.items[i], P.items[i - 1]];
+        if (act === 'down' && i < P.items.length - 1) [P.items[i + 1], P.items[i]] = [P.items[i], P.items[i + 1]];
+        if (act === 'dup') P.items.splice(i + 1, 0, { ...it, uid: uid(), done: false });
+        if (act === 'del') P.items.splice(i, 1);
+        save(); render();
+        const again = document.querySelector('[data-uid="' + li.dataset.uid + '"] [data-act="' + act + '"]');
+        if (again && !again.disabled) again.focus();
+        return;
+      }
+      if (!run) return;
+      if (b.id === 'pr-pause') { if (run.pausedAt) { run.t0 += Date.now() - run.pausedAt; run.pausedAt = null; } else run.pausedAt = Date.now(); drawRun(); }
+      if (b.id === 'pr-next') nextItem();
+      if (b.id === 'pr-plus1') { st.plan.items[run.idx].min++; run.beeped = false; save(); render(); updateRun(); }
+      if (b.id === 'pr-stop') finishRun(false);
+    });
+    root.addEventListener('change', e => {
+      const t = e.target;
+      if (t.id === 'pr-auto' && run) { run.auto = t.checked; return; }
+      const li = t.closest('[data-uid]');
+      if (li) {
+        const it = st.plan.items.find(x => x.uid === li.dataset.uid);
+        if (t.dataset.act === 'min') it.min = Math.max(1, Math.min(240, Math.round(Number(t.value) || it.min)));
+        if (t.dataset.act === 'who') it.who = t.value;
+        if (t.dataset.act === 'note') it.note = t.value.trim();
+        save(); render(); return;
+      }
+      if (t.id === 'pr-target') { st.plan.target = Number(t.value); save(); render(); }
+      if (t.id === 'pr-date' || t.id === 'pr-start') { st.plan[t.id === 'pr-date' ? 'date' : 'start'] = t.value; save(); render(); }
+    });
+    root.addEventListener('input', e => {
+      const t = e.target;
+      if (t.id === 'pr-title') { st.plan.title = t.value.trim() || '練習計畫'; save(); }
+      if (t.dataset.act === 'note') { const li = t.closest('[data-uid]'); st.plan.items.find(x => x.uid === li.dataset.uid).note = t.value; save(); }
+    });
+
+    $('pr-go').addEventListener('click', startRun);
+    $('pr-save').addEventListener('click', () => {
+      const P = st.plan;
+      const ex = st.saved.find(s => s.title === P.title && s.date === P.date);
+      const rec = { id: ex ? ex.id : uid(), title: P.title, date: P.date, start: P.start, target: P.target, items: JSON.parse(JSON.stringify(P.items)) };
+      if (ex) Object.assign(ex, rec); else st.saved.unshift(rec);
+      save(); render(); msg((ex ? '已更新存檔「' : '已存檔「') + P.title + '」。');
+    });
+    $('pr-copy').addEventListener('click', () => {
+      const text = copyText();
+      const box = $('pr-copybox');
+      box.value = text;
+      const fallback = () => { box.hidden = false; box.focus(); box.select(); msg('沒辦法自動複製，文字已選取，請長按或按 Ctrl+C 複製。'); };
+      try {
+        navigator.clipboard.writeText(text).then(() => { box.hidden = true; msg('已複製，可以直接貼到 LINE 群組。'); }, fallback);
+      } catch (e) { fallback(); }
+    });
+    $('pr-clear').addEventListener('click', e => {
+      const b = e.currentTarget;
+      if (!b.classList.contains('armed')) { b.classList.add('armed'); b.textContent = '再按一次清空'; setTimeout(() => { b.classList.remove('armed'); b.textContent = '清空'; }, 3000); return; }
+      b.classList.remove('armed'); b.textContent = '清空';
+      st.plan.items = []; save(); render(); msg('計畫已清空。');
+    });
+    const readNew = () => {
+      const name = $('pr-new-name').value.trim();
+      if (!name) { $('pr-new-msg').textContent = '請先輸入項目名稱。'; $('pr-new-name').focus(); return null; }
+      const min = Math.max(1, Math.min(240, Math.round(Number($('pr-new-min').value) || 15)));
+      return { id: 'c' + uid(), cat: $('pr-new-cat').value, name, min, desc: $('pr-new-desc').value.trim() };
+    };
+    $('pr-new-add').addEventListener('click', () => { const d = readNew(); if (!d) return; st.plan.items.push(toItem(d)); save(); render(); $('pr-new-msg').textContent = '已把「' + d.name + '」加入計畫。'; });
+    $('pr-new-lib').addEventListener('click', () => {
+      const d = readNew(); if (!d) return;
+      st.lib = st.lib.filter(x => x.name !== d.name).concat(d);
+      st.filter = d.cat; save(); render();
+      $('pr-new-name').value = ''; $('pr-new-desc').value = '';
+      $('pr-new-msg').textContent = '已把「' + d.name + '」存到項目庫的「' + d.cat + '」類別。';
+    });
+  }
+
+  bind();
+  window.vbPrac = { render };
+})();
+</script>
+<script>
+(function () {
   const SIM_KEY = 'vb-sim-v1';
   const NS = 'http://www.w3.org/2000/svg';
   const R = 0.46; // 球員圓圈半徑（公尺）
@@ -1861,10 +2291,11 @@ tfoot td { font-weight: 700; border-bottom: 0; }
 
   // 分頁切換
   function show(view) {
-    ['score', 'sim', 'set'].forEach(v => { $('view-' + v).hidden = v !== view; });
+    ['score', 'sim', 'set', 'prac'].forEach(v => { $('view-' + v).hidden = v !== view; });
     document.querySelectorAll('[data-view]').forEach(b => b.setAttribute('aria-selected', String(b.dataset.view === view)));
     if (view === 'sim') render();
     if (view === 'set' && window.vbSet) window.vbSet.render();
+    if (view === 'prac' && window.vbPrac) window.vbPrac.render();
     try { localStorage.setItem('vb-view', view); } catch (e) {}
   }
   document.querySelectorAll('[data-view]').forEach(b => b.addEventListener('click', () => show(b.dataset.view)));
@@ -1872,7 +2303,7 @@ tfoot td { font-weight: 700; border-bottom: 0; }
   bind();
   let start = 'score';
   try { start = localStorage.getItem('vb-view') || 'score'; } catch (e) {}
-  if (location.hash === '#sim' || location.hash === '#set') start = location.hash.slice(1);
-  show(['sim', 'set'].includes(start) ? start : 'score');
+  if (['#sim', '#set', '#prac'].includes(location.hash)) start = location.hash.slice(1);
+  show(['sim', 'set', 'prac'].includes(start) ? start : 'score');
 })();
 </script>
