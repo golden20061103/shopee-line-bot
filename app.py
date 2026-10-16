@@ -90,7 +90,7 @@ VOLLEYBALL_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "volle
 
 VOLLEYBALL_FILES = {
     "index.html", "manifest.webmanifest", "sw.js",
-    "icons/icon.svg", "icons/icon-180.png", "icons/icon-192.png", "icons/icon-512.png",
+    "icons/icon-180.png", "icons/icon-192.png", "icons/icon-512.png",
 }
 
 @app.route("/volleyball", methods=["GET"])
