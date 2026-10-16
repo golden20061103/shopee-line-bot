@@ -1,6 +1,6 @@
 // 離線快取：打開 App 時先抓最新版（有網路時），沒網路才用快取；字型用過就存起來
 // 每次發布新版請把版本號 +1，舊快取會自動清掉
-const CACHE = 'vb-app-v2';
+const CACHE = 'vb-app-v3';
 const SHELL = ['./', './index.html', './manifest.webmanifest', './icons/icon-192.png', './icons/icon-512.png', './icons/icon-180.png'];
 
 self.addEventListener('install', e => {
