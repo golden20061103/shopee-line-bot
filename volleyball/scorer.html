@@ -2303,7 +2303,8 @@ tfoot td { font-weight: 700; border-bottom: 0; }
   bind();
   let start = 'score';
   try { start = localStorage.getItem('vb-view') || 'score'; } catch (e) {}
-  if (['#sim', '#set', '#prac'].includes(location.hash)) start = location.hash.slice(1);
+  if (['#score', '#sim', '#set', '#prac'].includes(location.hash)) start = location.hash.slice(1);
   show(['sim', 'set', 'prac'].includes(start) ? start : 'score');
+  window.addEventListener('hashchange', () => { const h = location.hash.slice(1); if (['score', 'sim', 'set', 'prac'].includes(h)) show(h); });
 })();
 </script>

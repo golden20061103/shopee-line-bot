@@ -1,0 +1,23 @@
+{
+  "name": "排球計分板",
+  "short_name": "排球",
+  "description": "排球計分、模擬對戰、模擬配球與球隊練習",
+  "lang": "zh-Hant-TW",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#EDF1F6",
+  "theme_color": "#1B2638",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" },
+    { "src": "icons/icon.svg", "sizes": "any", "type": "image/svg+xml" }
+  ],
+  "shortcuts": [
+    { "name": "計分", "url": "./#score", "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }] },
+    { "name": "模擬對戰", "url": "./#sim", "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }] },
+    { "name": "模擬配球", "url": "./#set", "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }] },
+    { "name": "球隊練習", "url": "./#prac", "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }] }
+  ]
+}

@@ -1,6 +1,6 @@
 import os
 import urllib.parse
-from flask import Flask, request, abort, send_from_directory
+from flask import Flask, request, abort, redirect, send_from_directory
 from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
 from linebot.models import (
@@ -88,10 +88,26 @@ def handle_message(event):
 
 VOLLEYBALL_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "volleyball")
 
+VOLLEYBALL_FILES = {
+    "index.html", "manifest.webmanifest", "sw.js",
+    "icons/icon.svg", "icons/icon-180.png", "icons/icon-192.png", "icons/icon-512.png",
+}
+
 @app.route("/volleyball", methods=["GET"])
+def volleyball_redirect():
+    # 結尾要有斜線，App 的相對路徑（manifest、圖示、sw.js）才找得到
+    return redirect("/volleyball/", code=301)
+
 @app.route("/volleyball/", methods=["GET"])
-def volleyball():
-    return send_from_directory(VOLLEYBALL_DIR, "index.html")
+@app.route("/volleyball/<path:filename>", methods=["GET"])
+def volleyball(filename="index.html"):
+    if filename not in VOLLEYBALL_FILES:
+        abort(404)
+    mimetype = "application/manifest+json" if filename.endswith(".webmanifest") else None
+    resp = send_from_directory(VOLLEYBALL_DIR, filename, mimetype=mimetype)
+    if filename == "sw.js":
+        resp.headers["Cache-Control"] = "no-cache"
+    return resp
 
 @app.route("/", methods=["GET"])
 def health():
